@@ -1,0 +1,51 @@
+{
+  "updated_at": "2026-09-01T15:20:10.598839+00:00",
+  "gold": {
+    "name": "Gold",
+    "symbol": "GC=F",
+    "type": "commodity",
+    "source": "Yahoo Finance",
+    "contract": "COMEX Gold Futures",
+    "currency": "INR",
+    "unit": "gram",
+    "price": 13456.47,
+    "price_inr_per_gram": 13456.47,
+    "price_inr_per_10g": 134564.7,
+    "price_usd_per_gram": 141.7366,
+    "price_usd_per_troy_ounce": 4408.5,
+    "previous_close_usd_per_troy_ounce": 4431.1,
+    "change_usd_per_troy_ounce": -22.6,
+    "change_percent": -0.51,
+    "usd_inr": 94.94,
+    "timestamp": "2026-09-01T11:00:00-04:00",
+    "interval": "15m",
+    "conversion": {
+      "troy_ounce_to_grams": 31.1034768,
+      "formula": "USD/oz \u00f7 31.1034768 \u00d7 USD/INR"
+    }
+  },
+  "silver": {
+    "name": "Silver",
+    "symbol": "SI=F",
+    "type": "commodity",
+    "source": "Yahoo Finance",
+    "contract": "COMEX Silver Futures",
+    "currency": "INR",
+    "unit": "gram",
+    "price": 199.49,
+    "price_inr_per_gram": 199.49,
+    "price_inr_per_10g": 1994.89,
+    "price_usd_per_gram": 2.1012,
+    "price_usd_per_troy_ounce": 65.36,
+    "previous_close_usd_per_troy_ounce": 66.22,
+    "change_usd_per_troy_ounce": -0.87,
+    "change_percent": -1.3077,
+    "usd_inr": 94.94,
+    "timestamp": "2026-09-01T11:00:00-04:00",
+    "interval": "15m",
+    "conversion": {
+      "troy_ounce_to_grams": 31.1034768,
+      "formula": "USD/oz \u00f7 31.1034768 \u00d7 USD/INR"
+    }
+  }
+}

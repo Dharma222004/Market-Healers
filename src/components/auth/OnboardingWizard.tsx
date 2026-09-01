@@ -76,9 +76,9 @@ export const OnboardingWizard: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-2xl bg-white border border-slate-200 rounded-xl p-6 sm:p-10 shadow-lg">
+    <div className="w-full max-w-2xl bg-white border border-slate-200 rounded-2xl p-5 sm:p-8 md:p-10 shadow-lg text-left">
       {/* Step Indicator Bar */}
-      <div className="mb-8">
+      <div className="mb-6 sm:mb-8">
         <div className="flex items-center justify-between text-xs font-mono text-slate-500 mb-2">
           <span>STEP 0{currentStep} OF 05</span>
           <span className="font-semibold text-[#00A88F]">
@@ -99,9 +99,9 @@ export const OnboardingWizard: React.FC = () => {
 
       {/* STEP 1: Account Creation */}
       {currentStep === 1 && (
-        <form onSubmit={handleNextFromStep1} className="space-y-5">
+        <form onSubmit={handleNextFromStep1} className="space-y-4 sm:space-y-5">
           <div>
-            <h3 className="text-2xl font-bold text-[#0B1F3A]">Create Your Market Healers Account</h3>
+            <h3 className="text-xl sm:text-2xl font-bold text-[#0B1F3A]">Create Your Market Healers Account</h3>
             <p className="text-xs text-slate-500 mt-1">
               Begin your structured journey toward disciplined market understanding.
             </p>
@@ -117,7 +117,7 @@ export const OnboardingWizard: React.FC = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. Priya Sharma"
-              className="w-full px-3.5 py-2.5 text-xs border border-slate-300 rounded-md focus:outline-none focus:border-[#00A88F] text-slate-800"
+              className="w-full px-3.5 py-2.5 min-h-[44px] text-base sm:text-xs border border-slate-300 rounded-xl focus:outline-none focus:border-[#00A88F] text-slate-800"
             />
           </div>
 
@@ -131,7 +131,7 @@ export const OnboardingWizard: React.FC = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="priya@domain.com"
-              className="w-full px-3.5 py-2.5 text-xs border border-slate-300 rounded-md focus:outline-none focus:border-[#00A88F] text-slate-800"
+              className="w-full px-3.5 py-2.5 min-h-[44px] text-base sm:text-xs border border-slate-300 rounded-xl focus:outline-none focus:border-[#00A88F] text-slate-800"
             />
           </div>
 
@@ -146,21 +146,21 @@ export const OnboardingWizard: React.FC = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Minimum 6 characters"
-              className="w-full px-3.5 py-2.5 text-xs border border-slate-300 rounded-md focus:outline-none focus:border-[#00A88F] text-slate-800"
+              className="w-full px-3.5 py-2.5 min-h-[44px] text-base sm:text-xs border border-slate-300 rounded-xl focus:outline-none focus:border-[#00A88F] text-slate-800"
             />
           </div>
 
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-3 bg-[#0B1F3A] hover:bg-[#132742] text-white text-xs font-semibold rounded-md shadow-sm transition-colors flex items-center justify-center gap-2"
+            className="w-full py-3.5 min-h-[48px] bg-[#0B1F3A] hover:bg-[#132742] text-white text-sm font-bold rounded-xl shadow-sm transition-colors flex items-center justify-center gap-2 cursor-pointer mt-2"
           >
             {isSubmitting ? (
               <Loader2 className="w-4 h-4 animate-spin text-[#00A88F]" />
             ) : (
               <>
                 <span>Continue to Experience Assessment</span>
-                <ArrowRight className="w-3.5 h-3.5 text-[#00A88F]" />
+                <ArrowRight className="w-4 h-4 text-[#00A88F]" />
               </>
             )}
           </button>
@@ -218,13 +218,13 @@ export const OnboardingWizard: React.FC = () => {
           <div className="flex items-center justify-between pt-4 border-t border-slate-100">
             <button
               onClick={() => setCurrentStep(1)}
-              className="text-xs text-slate-500 hover:text-slate-800 flex items-center gap-1 font-medium"
+              className="text-xs text-slate-500 hover:text-slate-800 flex items-center gap-1 font-medium py-2 px-3 min-h-[44px] cursor-pointer"
             >
               <ArrowLeft className="w-3.5 h-3.5" /> Back
             </button>
             <button
               onClick={() => setCurrentStep(3)}
-              className="px-6 py-2.5 bg-[#0B1F3A] text-white text-xs font-semibold rounded-md flex items-center gap-2 hover:bg-[#132742]"
+              className="px-6 py-3 min-h-[44px] bg-[#0B1F3A] text-white text-xs sm:text-sm font-bold rounded-xl flex items-center gap-2 hover:bg-[#132742] cursor-pointer"
             >
               <span>Next: Primary Goal</span>
               <ArrowRight className="w-3.5 h-3.5 text-[#00A88F]" />
@@ -237,7 +237,7 @@ export const OnboardingWizard: React.FC = () => {
       {currentStep === 3 && (
         <div className="space-y-6">
           <div>
-            <h3 className="text-2xl font-bold text-[#0B1F3A]">What is your primary market objective?</h3>
+            <h3 className="text-xl sm:text-2xl font-bold text-[#0B1F3A]">What is your primary market objective?</h3>
             <p className="text-xs text-slate-500 mt-1">
               Select the primary skill set you want to master in the Market Healers ecosystem.
             </p>
@@ -274,7 +274,7 @@ export const OnboardingWizard: React.FC = () => {
               <div
                 key={goal.id}
                 onClick={() => setPrimaryGoal(goal.id)}
-                className={`p-4 rounded-lg border cursor-pointer transition-all ${
+                className={`p-3.5 sm:p-4 rounded-xl border cursor-pointer transition-all ${
                   primaryGoal === goal.id
                     ? "border-[#00A88F] bg-teal-50/40 ring-1 ring-[#00A88F]"
                     : "border-slate-200 hover:border-slate-300 bg-white"
@@ -294,13 +294,13 @@ export const OnboardingWizard: React.FC = () => {
           <div className="flex items-center justify-between pt-4 border-t border-slate-100">
             <button
               onClick={() => setCurrentStep(2)}
-              className="text-xs text-slate-500 hover:text-slate-800 flex items-center gap-1 font-medium"
+              className="text-xs text-slate-500 hover:text-slate-800 flex items-center gap-1 font-medium py-2 px-3 min-h-[44px] cursor-pointer"
             >
               <ArrowLeft className="w-3.5 h-3.5" /> Back
             </button>
             <button
               onClick={() => setCurrentStep(4)}
-              className="px-6 py-2.5 bg-[#0B1F3A] text-white text-xs font-semibold rounded-md flex items-center gap-2 hover:bg-[#132742]"
+              className="px-6 py-3 min-h-[44px] bg-[#0B1F3A] text-white text-xs sm:text-sm font-bold rounded-xl flex items-center gap-2 hover:bg-[#132742] cursor-pointer"
             >
               <span>Next: Risk Awareness</span>
               <ArrowRight className="w-3.5 h-3.5 text-[#00A88F]" />
@@ -313,7 +313,7 @@ export const OnboardingWizard: React.FC = () => {
       {currentStep === 4 && (
         <div className="space-y-6">
           <div>
-            <h3 className="text-2xl font-bold text-[#0B1F3A]">Risk Awareness & Behavioral Readiness</h3>
+            <h3 className="text-xl sm:text-2xl font-bold text-[#0B1F3A]">Risk Awareness & Behavioral Readiness</h3>
             <p className="text-xs text-slate-500 mt-1">
               Markets fluctuate constantly. These three quick diagnostic questions initialize your Determind AI behavioral baseline.
             </p>
@@ -334,7 +334,7 @@ export const OnboardingWizard: React.FC = () => {
                   type="button"
                   key={opt.id}
                   onClick={() => setDrawdownComfort(opt.id)}
-                  className={`p-3 rounded border text-left transition-all ${
+                  className={`p-3 min-h-[44px] rounded-xl border text-left transition-all cursor-pointer ${
                     drawdownComfort === opt.id
                       ? "border-[#00A88F] bg-teal-50/50 text-[#0B1F3A] font-semibold"
                       : "border-slate-200 text-slate-600 hover:bg-slate-50"
@@ -361,7 +361,7 @@ export const OnboardingWizard: React.FC = () => {
                   type="button"
                   key={opt.id}
                   onClick={() => setTimeHorizon(opt.id)}
-                  className={`p-3 rounded border text-left transition-all ${
+                  className={`p-3 min-h-[44px] rounded-xl border text-left transition-all cursor-pointer ${
                     timeHorizon === opt.id
                       ? "border-[#00A88F] bg-teal-50/50 text-[#0B1F3A] font-semibold"
                       : "border-slate-200 text-slate-600 hover:bg-slate-50"
@@ -376,14 +376,14 @@ export const OnboardingWizard: React.FC = () => {
           <div className="flex items-center justify-between pt-4 border-t border-slate-100">
             <button
               onClick={() => setCurrentStep(3)}
-              className="text-xs text-slate-500 hover:text-slate-800 flex items-center gap-1 font-medium"
+              className="text-xs text-slate-500 hover:text-slate-800 flex items-center gap-1 font-medium py-2 px-3 min-h-[44px] cursor-pointer"
             >
               <ArrowLeft className="w-3.5 h-3.5" /> Back
             </button>
             <button
               onClick={handleCompleteOnboarding}
               disabled={isSubmitting}
-              className="px-6 py-2.5 bg-[#0B1F3A] text-white text-xs font-semibold rounded-md flex items-center gap-2 hover:bg-[#132742]"
+              className="px-6 py-3 min-h-[44px] bg-[#0B1F3A] text-white text-xs sm:text-sm font-bold rounded-xl flex items-center gap-2 hover:bg-[#132742] cursor-pointer"
             >
               {isSubmitting ? (
                 <Loader2 className="w-4 h-4 animate-spin text-[#00A88F]" />
@@ -401,7 +401,7 @@ export const OnboardingWizard: React.FC = () => {
       {/* STEP 5: Personalized Result Outcome */}
       {currentStep === 5 && (
         <div className="space-y-6 text-left animate-in fade-in duration-300">
-          <div className="p-4 rounded-lg bg-teal-50/80 border border-teal-200 flex items-center gap-3">
+          <div className="p-4 rounded-xl bg-teal-50/80 border border-teal-200 flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-[#00A88F] text-white flex items-center justify-center shrink-0">
               <Award className="w-5 h-5" />
             </div>
@@ -409,7 +409,7 @@ export const OnboardingWizard: React.FC = () => {
               <span className="text-[11px] font-mono font-bold uppercase text-[#00A88F]">
                 ONBOARDING VERIFIED
               </span>
-              <h3 className="text-xl font-bold text-[#0B1F3A]">
+              <h3 className="text-lg sm:text-xl font-bold text-[#0B1F3A]">
                 Welcome to Market Healers, {name || user?.name || "Investor"}.
               </h3>
             </div>
@@ -420,11 +420,11 @@ export const OnboardingWizard: React.FC = () => {
           </p>
 
           {/* Diagnostic Archetype & Scores */}
-          <div className="bg-[#08111F] text-slate-200 rounded-lg p-5 border border-[#1E2D44] space-y-4">
+          <div className="bg-[#08111F] text-slate-200 rounded-xl p-4 sm:p-5 border border-[#1E2D44] space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-[#1E2D44]">
               <div>
                 <span className="text-[10px] font-mono text-slate-400 uppercase">Assigned Archetype</span>
-                <div className="text-base font-bold text-white">
+                <div className="text-sm sm:text-base font-bold text-white">
                   {experienceLevel === "Beginner" ? "Foundational Wealth Builder" : "Methodical Equity Analyst"}
                 </div>
               </div>
@@ -433,22 +433,22 @@ export const OnboardingWizard: React.FC = () => {
               </span>
             </div>
 
-            <div className="grid grid-cols-3 gap-3 text-center font-mono">
-              <div className="p-2.5 bg-[#0E1A2B] rounded border border-slate-800">
+            <div className="grid grid-cols-3 gap-2 sm:gap-3 text-center font-mono">
+              <div className="p-2 sm:p-2.5 bg-[#0E1A2B] rounded-lg border border-slate-800">
                 <div className="text-[10px] text-slate-400">Risk Resilience</div>
-                <div className="text-sm font-bold text-[#00A88F] mt-0.5">
+                <div className="text-xs sm:text-sm font-bold text-[#00A88F] mt-0.5">
                   {drawdownComfort === "panic" ? "48%" : "76%"}
                 </div>
               </div>
-              <div className="p-2.5 bg-[#0E1A2B] rounded border border-slate-800">
+              <div className="p-2 sm:p-2.5 bg-[#0E1A2B] rounded-lg border border-slate-800">
                 <div className="text-[10px] text-slate-400">Patience Horizon</div>
-                <div className="text-sm font-bold text-white mt-0.5">
+                <div className="text-xs sm:text-sm font-bold text-white mt-0.5">
                   {timeHorizon === "long" ? "88%" : "62%"}
                 </div>
               </div>
-              <div className="p-2.5 bg-[#0E1A2B] rounded border border-slate-800">
+              <div className="p-2 sm:p-2.5 bg-[#0E1A2B] rounded-lg border border-slate-800">
                 <div className="text-[10px] text-slate-400">Starting Track</div>
-                <div className="text-xs font-bold text-amber-400 mt-1">
+                <div className="text-[11px] sm:text-xs font-bold text-amber-400 mt-1">
                   {experienceLevel === "Beginner" ? "Level 01" : "Level 02"}
                 </div>
               </div>
@@ -456,7 +456,7 @@ export const OnboardingWizard: React.FC = () => {
           </div>
 
           {/* Recommended Action */}
-          <div className="p-4 bg-slate-50 border border-slate-200 rounded-lg space-y-2">
+          <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
             <div className="text-xs font-bold text-[#0B1F3A] flex items-center gap-2">
               <BookOpen className="w-4 h-4 text-[#00A88F]" />
               <span>Recommended First Step:</span>
@@ -471,13 +471,13 @@ export const OnboardingWizard: React.FC = () => {
           <div className="pt-2 flex flex-col sm:flex-row gap-3">
             <Link
               href="/"
-              className="flex-1 py-3 text-center bg-[#0B1F3A] hover:bg-[#132742] text-white text-xs font-semibold rounded-md transition-colors"
+              className="flex-1 py-3.5 min-h-[44px] text-center bg-[#0B1F3A] hover:bg-[#132742] text-white text-xs sm:text-sm font-bold rounded-xl transition-colors flex items-center justify-center"
             >
               Explore Platform & Tools &rarr;
             </Link>
             <Link
               href="/#courses"
-              className="flex-1 py-3 text-center bg-white border border-slate-300 hover:bg-slate-50 text-[#0B1F3A] text-xs font-semibold rounded-md transition-colors"
+              className="flex-1 py-3.5 min-h-[44px] text-center bg-white border border-slate-300 hover:bg-slate-50 text-[#0B1F3A] text-xs sm:text-sm font-bold rounded-xl transition-colors flex items-center justify-center"
             >
               Go to Syllabus
             </Link>

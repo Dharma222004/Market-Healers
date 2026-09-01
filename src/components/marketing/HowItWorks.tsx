@@ -54,37 +54,37 @@ export const HowItWorks: React.FC = () => {
   ];
 
   return (
-    <section id="how-it-works" className="relative py-20 lg:py-28 bg-[#F6F8FA] border-b border-slate-200 overflow-hidden">
+    <section id="how-it-works" className="relative py-12 sm:py-16 lg:py-28 bg-[#F6F8FA] border-b border-slate-200 overflow-hidden">
       {/* Precision Background Grid */}
       <div className="absolute inset-0 bg-financial-grid opacity-50 pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Editorial Section Header */}
-        <div className="max-w-3xl mb-16 lg:mb-20 text-left">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200 text-xs font-mono font-bold uppercase tracking-widest text-[#00A88F] mb-4 shadow-2xs">
+        <div className="max-w-3xl mb-10 sm:mb-14 lg:mb-20 text-left">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200 text-xs font-mono font-bold uppercase tracking-widest text-[#00A88F] mb-3 sm:mb-4 shadow-2xs">
             <span className="w-1.5 h-1.5 rounded-full bg-[#00A88F]" />
             METHODOLOGY & FRAMEWORK
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#0B1F3A] tracking-tight leading-[1.12]">
-            How Market Healers Works. <br />
-            <span className="text-slate-500 font-medium text-2xl sm:text-3xl lg:text-4xl">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-[#0B1F3A] tracking-tight leading-[1.15] text-balance">
+            How Market Healers Works. <br className="hidden sm:inline" />
+            <span className="text-slate-500 font-medium text-lg sm:text-2xl lg:text-4xl block sm:inline mt-1 sm:mt-0">
               From market noise to disciplined independence.
             </span>
           </h2>
-          <p className="mt-5 text-base sm:text-lg text-slate-600 leading-relaxed font-normal">
+          <p className="mt-3 sm:mt-5 text-sm sm:text-base lg:text-lg text-slate-600 leading-relaxed font-normal">
             Financial markets penalize impulse and reward discipline. Our ecosystem bridges the gap between passive course consumption and active, institutional-grade decision support.
           </p>
         </div>
 
         {/* 4-Step Editorial Process Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-7 lg:gap-8 relative items-stretch">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-7 lg:gap-8 relative items-stretch">
           {steps.map((item, idx) => {
             const Icon = item.icon;
             return (
               <div
                 key={item.step}
-                className="group relative bg-white border border-slate-200/90 rounded-2xl p-7 sm:p-8 flex flex-col justify-between shadow-[0_2px_12px_rgba(11,31,58,0.04)] hover:shadow-[0_18px_38px_rgba(11,31,58,0.09)] hover:border-[#00A88F]/40 transition-all duration-300 hover:-translate-y-1 overflow-hidden"
+                className="group relative bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-7 lg:p-8 flex flex-col justify-between shadow-[0_2px_12px_rgba(11,31,58,0.04)] hover:shadow-[0_18px_38px_rgba(11,31,58,0.09)] hover:border-[#00A88F]/40 transition-all duration-300 hover:-translate-y-1 overflow-hidden"
               >
                 {/* Top Accent Gradient on Hover */}
                 <div

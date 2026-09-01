@@ -63,28 +63,28 @@ export const PricingSection: React.FC = () => {
   ];
 
   return (
-    <section id="pricing" className="py-20 bg-[#F6F8FA] border-b border-slate-200">
+    <section id="pricing" className="py-12 sm:py-16 lg:py-20 bg-[#F6F8FA] border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16">
           <div className="text-xs font-mono font-semibold uppercase tracking-widest text-[#00A88F] mb-3">
             MEMBERSHIP TIERS
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold text-[#0B1F3A] tracking-tight">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0B1F3A] tracking-tight text-balance">
             Transparent Investment in Your Knowledge.
           </h2>
-          <p className="mt-3 text-base text-[#667085]">
+          <p className="mt-2.5 sm:mt-3 text-sm sm:text-base text-[#667085] text-balance">
             Clear, upfront pricing with zero hidden advisory fees. Learn at your own pace with our structured education and decision-support tools.
           </p>
         </div>
 
         {/* Pricing Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-8 items-stretch">
           {plans.map((plan) => (
             <div
               key={plan.id}
-              className={`bg-white rounded-2xl p-6 sm:p-8 flex flex-col justify-between border ${plan.accentColor}`}
+              className={`bg-white rounded-2xl p-5 sm:p-8 flex flex-col justify-between border ${plan.accentColor} text-left`}
             >
               <div>
                 <div className="flex items-center justify-between mb-4">
@@ -103,7 +103,7 @@ export const PricingSection: React.FC = () => {
                 </div>
 
                 <div className="mb-4">
-                  <span className="text-4xl font-bold text-[#0B1F3A] font-mono tracking-tight">
+                  <span className="text-3xl sm:text-4xl font-bold text-[#0B1F3A] font-mono tracking-tight">
                     {plan.price}
                   </span>
                   <span className="text-xs text-slate-500 ml-2 font-medium">
@@ -111,7 +111,7 @@ export const PricingSection: React.FC = () => {
                   </span>
                 </div>
 
-                <p className="text-xs text-slate-600 mb-6 leading-relaxed">
+                <p className="text-xs sm:text-sm text-slate-600 mb-6 leading-relaxed">
                   {plan.description}
                 </p>
 
@@ -120,7 +120,7 @@ export const PricingSection: React.FC = () => {
                     Included in this plan:
                   </div>
                   {plan.features.map((feature, i) => (
-                    <div key={i} className="flex items-start gap-2 text-xs text-slate-700">
+                    <div key={i} className="flex items-start gap-2 text-xs sm:text-sm text-slate-700">
                       <Check className="w-3.5 h-3.5 text-[#00A88F] shrink-0 mt-0.5" />
                       <span>{feature}</span>
                     </div>
@@ -131,14 +131,14 @@ export const PricingSection: React.FC = () => {
               <div className="pt-4 border-t border-slate-100">
                 <Link
                   href="/onboarding"
-                  className={`w-full py-3 rounded-md text-xs font-semibold flex items-center justify-center gap-1.5 transition-all ${
+                  className={`w-full py-3.5 min-h-[44px] rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-all ${
                     plan.isPrimary
                       ? "bg-[#0B1F3A] hover:bg-[#132742] text-white shadow-sm"
                       : "bg-slate-100 hover:bg-slate-200 text-[#0B1F3A]"
                   }`}
                 >
                   <span>{plan.ctaText}</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-[#00A88F]" />
+                  <ArrowRight className="w-4 h-4 text-[#00A88F]" />
                 </Link>
               </div>
             </div>

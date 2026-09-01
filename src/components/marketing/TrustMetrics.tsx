@@ -157,7 +157,7 @@ export const TrustMetrics: React.FC = () => {
   return (
     <section
       ref={containerRef}
-      className="relative py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-white via-[#F8FAFC] to-white border-b border-slate-200/90 overflow-hidden font-sans"
+      className="relative py-12 sm:py-16 lg:py-24 bg-gradient-to-b from-white via-[#F8FAFC] to-white border-b border-slate-200/90 overflow-hidden font-sans"
     >
       {/* Precision Background Ambience */}
       <div className="absolute inset-0 bg-financial-grid opacity-40 pointer-events-none" />
@@ -166,10 +166,10 @@ export const TrustMetrics: React.FC = () => {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-4xl mx-auto mb-14 sm:mb-16">
+        <div className="text-center max-w-4xl mx-auto mb-10 sm:mb-14 lg:mb-16">
           
           {/* Institutional Badge with Brand Emblem */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-slate-200 shadow-xs mb-4">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-slate-200 shadow-xs mb-3 sm:mb-4">
             <img
               src="/logo/emblem.png"
               alt="Market Healers Emblem"
@@ -182,19 +182,19 @@ export const TrustMetrics: React.FC = () => {
           </div>
 
           {/* Headline with High-Impact Typography & Perfect Alignment */}
-          <h2 className="text-3xl sm:text-4xl lg:text-[46px] font-black text-[#0B1F3A] tracking-tight leading-[1.2] text-balance">
+          <h2 className="text-2xl sm:text-3xl lg:text-[46px] font-black text-[#0B1F3A] tracking-tight leading-[1.2] text-balance">
             Built to help investors <br className="hidden sm:inline" />
             <span className="text-[#00A88F]">learn before they act.</span>
           </h2>
 
           {/* Subtitle with Increased Readability & Size */}
-          <p className="text-base sm:text-lg lg:text-xl text-slate-600 font-normal leading-relaxed mt-4 max-w-2xl mx-auto text-balance">
+          <p className="text-sm sm:text-base lg:text-xl text-slate-600 font-normal leading-relaxed mt-3 sm:mt-4 max-w-2xl mx-auto text-balance">
             Independent financial education backed by rigorous market mechanics, institutional risk discipline, and intelligent analytical tooling.
           </p>
         </div>
 
         {/* 4 Professional Metric Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-7">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 lg:gap-7">
           {metrics.map((metric) => {
             const Icon = metric.icon;
             const currentVal = inView ? counts[metric.id] ?? metric.targetNumber : 0;
@@ -202,7 +202,7 @@ export const TrustMetrics: React.FC = () => {
             return (
               <div
                 key={metric.id}
-                className="group relative p-7 sm:p-8 rounded-2xl bg-white border border-slate-200/90 hover:border-[#00A88F]/50 shadow-[0_2px_12px_rgba(11,31,58,0.04)] hover:shadow-[0_16px_36px_rgba(11,31,58,0.09)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between text-left overflow-hidden"
+                className="group relative p-5 sm:p-7 lg:p-8 rounded-2xl bg-white border border-slate-200/90 hover:border-[#00A88F]/50 shadow-[0_2px_12px_rgba(11,31,58,0.04)] hover:shadow-[0_16px_36px_rgba(11,31,58,0.09)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between text-left overflow-hidden"
               >
                 {/* Top Accent Gradient Bar on Hover */}
                 <div

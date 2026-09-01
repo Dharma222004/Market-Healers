@@ -9,7 +9,7 @@ export const HeroLogoVideo: React.FC = () => {
       <div className="absolute -inset-3 bg-gradient-to-tr from-[#00A88F]/10 via-[#0B1F3A]/5 to-[#C9A227]/10 rounded-3xl blur-xl opacity-60 pointer-events-none" />
 
       {/* Clean Premium Presentation Card */}
-      <div className="relative bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 shadow-xl flex flex-col items-center justify-center text-center">
+      <div className="relative bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-6 lg:p-8 shadow-xl flex flex-col items-center justify-center text-center">
 
         {/* Seamless Statically Embedded Animation */}
         <div className="w-full max-w-full sm:max-w-[400px] aspect-square flex items-center justify-center bg-white overflow-hidden rounded-xl mx-auto">
@@ -28,7 +28,7 @@ export const HeroLogoVideo: React.FC = () => {
         </div>
 
         {/* Philosophy Quote Perfectly Below the Logo */}
-        <div className="mt-4 pt-4 border-t border-slate-100/90 w-full max-w-md">
+        <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-slate-100/90 w-full max-w-md">
           <p className="font-philosophy text-base sm:text-lg md:text-xl font-medium text-[#0B1F3A] tracking-normal leading-relaxed text-balance">
             Financial Freedom Begins With Understanding, Not Earning.
           </p>

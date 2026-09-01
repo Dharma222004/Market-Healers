@@ -46,27 +46,27 @@ export const LearningPaths: React.FC = () => {
   ];
 
   return (
-    <section className="py-20 lg:py-28 bg-[#F6F8FA] border-b border-slate-200">
+    <section className="py-12 sm:py-16 lg:py-28 bg-[#F6F8FA] border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div className="max-w-3xl mb-14 lg:mb-16 text-left">
+        <div className="max-w-3xl mb-10 sm:mb-14 lg:mb-16 text-left">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200 text-xs font-mono font-bold uppercase tracking-widest text-[#00A88F] mb-3 shadow-2xs">
             <span className="w-1.5 h-1.5 rounded-full bg-[#00A88F]" />
             PROGRESSION FRAMEWORKS
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#0B1F3A] tracking-tight leading-tight">
+          <h2 className="text-2xl sm:text-3xl lg:text-5xl font-black text-[#0B1F3A] tracking-tight leading-tight text-balance">
             Tailored Pathways for <span className="text-[#00A88F]">Every Stage.</span>
           </h2>
-          <p className="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed font-normal">
+          <p className="mt-3 sm:mt-4 text-sm sm:text-base lg:text-lg text-slate-600 leading-relaxed font-normal">
             No cookie-cutter courses. Select the learning pathway tailored to your current market knowledge and capital objectives.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-8">
           {tracks.map((track) => (
             <div
               key={track.id}
-              className="bg-white border border-slate-200/90 rounded-2xl p-7 sm:p-8 flex flex-col justify-between hover:shadow-xl hover:border-[#00A88F]/40 transition-all duration-300 hover:-translate-y-1"
+              className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-7 lg:p-8 flex flex-col justify-between hover:shadow-xl hover:border-[#00A88F]/40 transition-all duration-300 hover:-translate-y-1 text-left"
             >
               <div>
                 <div className="flex items-center justify-between mb-5">

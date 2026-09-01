@@ -31,40 +31,40 @@ export const CommunitySection: React.FC = () => {
   ];
 
   return (
-    <section id="community" className="py-20 lg:py-28 bg-white border-b border-slate-200">
+    <section id="community" className="py-12 sm:py-16 lg:py-28 bg-white border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
-        <div className="max-w-3xl mb-14 lg:mb-16 text-left">
+        <div className="max-w-3xl mb-10 sm:mb-14 lg:mb-16 text-left">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-50 border border-teal-200 text-xs font-mono font-bold uppercase tracking-widest text-[#00A88F] mb-3 shadow-2xs">
             <span className="w-1.5 h-1.5 rounded-full bg-[#00A88F]" />
             MENTORSHIP & COLLABORATIVE RIGOR
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#0B1F3A] tracking-tight leading-tight">
+          <h2 className="text-2xl sm:text-3xl lg:text-5xl font-black text-[#0B1F3A] tracking-tight leading-tight text-balance">
             An Education-Centric <span className="text-[#00A88F]">Community.</span>
           </h2>
-          <p className="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed font-normal">
+          <p className="mt-3 sm:mt-4 text-sm sm:text-base lg:text-lg text-slate-600 leading-relaxed font-normal">
             We deliberately avoid noisy social feeds, speculative tip groups, and meme culture. Our community is built exclusively for serious learners committed to empirical financial mastery.
           </p>
         </div>
 
         {/* 3 Pillars Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-8">
           {communityPillars.map((pillar, idx) => {
             const Icon = pillar.icon;
             return (
               <div
                 key={idx}
-                className="bg-[#F8FAFC] border border-slate-200/90 rounded-2xl p-7 sm:p-8 flex flex-col justify-between hover:border-[#00A88F]/40 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                className="bg-[#F8FAFC] border border-slate-200/90 rounded-2xl p-5 sm:p-7 lg:p-8 flex flex-col justify-between hover:border-[#00A88F]/40 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 text-left"
               >
                 <div>
                   <div className={`w-12 h-12 rounded-xl border flex items-center justify-center mb-5 ${pillar.badgeColor} shadow-2xs`}>
                     <Icon className="w-6 h-6 stroke-[2.2]" />
                   </div>
-                  <h3 className="text-xl sm:text-2xl font-black text-[#0B1F3A] tracking-tight mb-3">
+                  <h3 className="text-xl sm:text-2xl font-black text-[#0B1F3A] tracking-tight mb-2.5 sm:mb-3">
                     {pillar.title}
                   </h3>
-                  <p className="text-sm sm:text-[15px] text-slate-600 leading-relaxed mb-6 font-normal">
+                  <p className="text-sm sm:text-[15px] text-slate-600 leading-relaxed mb-5 sm:mb-6 font-normal">
                     {pillar.description}
                   </p>
                 </div>
@@ -79,8 +79,8 @@ export const CommunitySection: React.FC = () => {
         </div>
 
         {/* Code of Conduct / Anti-Hype pledge */}
-        <div className="mt-12 p-7 sm:p-8 rounded-2xl bg-gradient-to-r from-amber-50/70 via-slate-50 to-teal-50/40 border border-amber-200/80 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-xs">
-          <div className="flex items-start gap-4">
+        <div className="mt-8 sm:mt-12 p-5 sm:p-7 lg:p-8 rounded-2xl bg-gradient-to-r from-amber-50/70 via-slate-50 to-teal-50/40 border border-amber-200/80 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 sm:gap-6 shadow-xs text-left">
+          <div className="flex items-start gap-3.5 sm:gap-4">
             <div className="p-2.5 rounded-xl bg-amber-100 text-amber-800 shrink-0 border border-amber-200 shadow-2xs">
               <ShieldCheck className="w-6 h-6" />
             </div>
@@ -93,7 +93,7 @@ export const CommunitySection: React.FC = () => {
           </div>
           <Link
             href="/onboarding"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-[#0B1F3A] hover:bg-[#132742] text-white text-sm font-bold rounded-xl shrink-0 transition-all hover:scale-[1.02] shadow-md"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 min-h-[44px] w-full md:w-auto bg-[#0B1F3A] hover:bg-[#132742] text-white text-sm font-bold rounded-xl shrink-0 transition-all hover:scale-[1.02] shadow-md"
           >
             <span>Join Learning Community</span>
             <ArrowRight className="w-4 h-4 text-[#00A88F]" />

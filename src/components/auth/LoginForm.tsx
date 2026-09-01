@@ -112,7 +112,7 @@ export const LoginForm: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-md bg-white border border-slate-200 rounded-xl p-8 shadow-md text-left">
+    <div className="w-full max-w-md bg-white border border-slate-200 rounded-2xl p-5 sm:p-8 shadow-md text-left">
       <div className="text-center mb-6">
         <h2 className="text-2xl font-bold text-[#0B1F3A]">Investor Sign In</h2>
         <p className="text-xs text-slate-500 mt-1">
@@ -121,7 +121,7 @@ export const LoginForm: React.FC = () => {
       </div>
 
       {error && (
-        <div className="mb-5 p-3.5 rounded-lg bg-rose-50 border border-rose-200 text-xs text-rose-800 space-y-2">
+        <div className="mb-5 p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-800 space-y-2">
           <div className="flex items-start gap-2">
             <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
             <span className="font-semibold leading-snug">{error}</span>
@@ -142,14 +142,14 @@ export const LoginForm: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleOAuthRedirect}
-                  className="w-full py-1.5 px-3 bg-white border border-rose-300 rounded text-rose-900 font-semibold text-[11px] hover:bg-rose-100/50 transition-colors"
+                  className="w-full py-2 px-3 bg-white border border-rose-300 rounded-lg text-rose-900 font-semibold text-xs hover:bg-rose-100/50 transition-colors"
                 >
                   Try Full-Page Google OAuth Redirect &rarr;
                 </button>
                 <button
                   type="button"
                   onClick={handleInstantGoogleFallback}
-                  className="w-full py-1.5 px-3 bg-[#0B1F3A] text-white rounded font-semibold text-[11px] hover:bg-[#132742] transition-colors"
+                  className="w-full py-2 px-3 bg-[#0B1F3A] text-white rounded-lg font-semibold text-xs hover:bg-[#132742] transition-colors"
                 >
                   Continue with Instant Google Account Demo &rarr;
                 </button>
@@ -166,7 +166,7 @@ export const LoginForm: React.FC = () => {
           type="button"
           onClick={handleGooglePopupLogin}
           disabled={isGoogleSubmitting || isSubmitting}
-          className="w-full py-2.5 px-4 border border-slate-300 rounded-md text-xs font-semibold text-slate-800 hover:bg-slate-50 flex items-center justify-center gap-2.5 transition-colors shadow-2xs group"
+          className="w-full py-3 px-4 min-h-[44px] border border-slate-300 rounded-xl text-xs sm:text-sm font-semibold text-slate-800 hover:bg-slate-50 flex items-center justify-center gap-2.5 transition-colors shadow-2xs group cursor-pointer"
         >
           {isGoogleSubmitting ? (
             <Loader2 className="w-4 h-4 animate-spin text-[#00A88F]" />
@@ -206,13 +206,13 @@ export const LoginForm: React.FC = () => {
             Registered Email
           </label>
           <div className="relative">
-            <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+            <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-3.5" />
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="name@example.com"
-              className="w-full text-xs pl-9 pr-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:border-[#00A88F] text-slate-800 transition-colors"
+              className="w-full text-base sm:text-xs pl-9 pr-3 py-2.5 min-h-[44px] border border-slate-300 rounded-xl focus:outline-none focus:border-[#00A88F] text-slate-800 transition-colors"
             />
           </div>
         </div>
@@ -228,13 +228,13 @@ export const LoginForm: React.FC = () => {
             </Link>
           </div>
           <div className="relative">
-            <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+            <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3.5" />
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••••••"
-              className="w-full text-xs pl-9 pr-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:border-[#00A88F] text-slate-800 transition-colors"
+              className="w-full text-base sm:text-xs pl-9 pr-3 py-2.5 min-h-[44px] border border-slate-300 rounded-xl focus:outline-none focus:border-[#00A88F] text-slate-800 transition-colors"
             />
           </div>
         </div>
@@ -242,7 +242,7 @@ export const LoginForm: React.FC = () => {
         <button
           type="submit"
           disabled={isSubmitting || isGoogleSubmitting}
-          className="w-full py-2.5 px-4 bg-[#0B1F3A] hover:bg-[#132742] disabled:opacity-50 text-white text-xs font-semibold rounded-md shadow-xs flex items-center justify-center gap-2 transition-colors mt-2"
+          className="w-full py-3 px-4 min-h-[44px] bg-[#0B1F3A] hover:bg-[#132742] disabled:opacity-50 text-white text-sm font-bold rounded-xl shadow-xs flex items-center justify-center gap-2 transition-colors mt-2 cursor-pointer"
         >
           {isSubmitting ? (
             <>

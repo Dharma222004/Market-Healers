@@ -93,7 +93,7 @@ export const AiEcosystem: React.FC = () => {
   return (
     <section
       id="ai-ecosystem"
-      className="scroll-mt-20 py-24 sm:py-28 lg:py-32 bg-[#08111F] text-slate-100 border-b border-[#1E2D44] relative overflow-hidden"
+      className="scroll-mt-20 py-14 sm:py-20 lg:py-32 bg-[#08111F] text-slate-100 border-b border-[#1E2D44] relative overflow-hidden"
     >
       {/* Subtle dark financial grid and ambient light */}
       <div className="absolute inset-0 bg-financial-grid-dark opacity-60 pointer-events-none" />
@@ -102,18 +102,18 @@ export const AiEcosystem: React.FC = () => {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Editorial Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0E1A2B] border border-slate-700/80 text-xs font-mono font-bold text-[#00A88F] uppercase tracking-widest mb-4 shadow-sm">
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14 lg:mb-20">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0E1A2B] border border-slate-700/80 text-xs font-mono font-bold text-[#00A88F] uppercase tracking-widest mb-3 sm:mb-4 shadow-sm">
             <Sparkles className="w-3.5 h-3.5 text-[#00A88F]" />
             <span>DECISION SUPPORT INFRASTRUCTURE</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-[1.12]">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white tracking-tight leading-[1.15] text-balance">
             One Ecosystem. <br className="hidden sm:inline" />
             <span className="text-[#00A88F]">Multiple Ways to Think Better.</span>
           </h2>
 
-          <p className="mt-5 text-base sm:text-lg text-slate-300 leading-relaxed font-normal max-w-2xl mx-auto">
+          <p className="mt-3 sm:mt-5 text-sm sm:text-base lg:text-lg text-slate-300 leading-relaxed font-normal max-w-2xl mx-auto text-balance">
             Market Healers avoids disjointed single-purpose bots. Our five specialized AI products are sequentially aligned to support every phase of your market decision process.
           </p>
         </div>
@@ -139,7 +139,7 @@ export const AiEcosystem: React.FC = () => {
             return (
               <div
                 key={tool.id}
-                className="group relative bg-[#0E1A2B] border border-[#1E2D44] hover:border-[#00A88F]/50 rounded-2xl p-6 sm:p-7 flex flex-col justify-between shadow-[0_4px_20px_rgba(0,0,0,0.3)] hover:shadow-[0_16px_36px_rgba(0,168,143,0.12)] transition-all duration-300 hover:-translate-y-1 overflow-hidden"
+                className="group relative bg-[#0E1A2B] border border-[#1E2D44] hover:border-[#00A88F]/50 rounded-2xl p-5 sm:p-7 flex flex-col justify-between shadow-[0_4px_20px_rgba(0,0,0,0.3)] hover:shadow-[0_16px_36px_rgba(0,168,143,0.12)] transition-all duration-300 hover:-translate-y-1 overflow-hidden text-left"
               >
                 {/* Top Accent Glowing Line on Hover */}
                 <div

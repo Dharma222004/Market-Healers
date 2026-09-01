@@ -35,21 +35,21 @@ export const AiProductsShowcase: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="max-w-3xl mb-12 text-left">
+        <div className="max-w-3xl mb-8 sm:mb-12 text-left">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-50 border border-teal-200 text-xs font-mono font-bold uppercase tracking-widest text-[#00A88F] mb-3 shadow-2xs">
             <span className="w-1.5 h-1.5 rounded-full bg-[#00A88F]" />
             PRODUCT SUITE DEMO
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#0B1F3A] tracking-tight leading-tight">
+          <h2 className="text-2xl sm:text-3xl lg:text-5xl font-black text-[#0B1F3A] tracking-tight leading-tight text-balance">
             Institutional Tooling. <span className="text-[#00A88F]">Purpose-Built.</span>
           </h2>
-          <p className="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed font-normal">
+          <p className="mt-3 sm:mt-4 text-sm sm:text-base lg:text-lg text-slate-600 leading-relaxed font-normal">
             Explore each specialized intelligence product in the Market Healers workspace. Select a tool to preview its actual dedicated interface.
           </p>
         </div>
 
         {/* Product Tabs Navigation */}
-        <div className="flex items-center gap-2 sm:gap-2.5 border-b border-slate-200 pb-4 overflow-x-auto mb-10" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}>
+        <div className="flex items-center gap-2 sm:gap-2.5 border-b border-slate-200 pb-3 sm:pb-4 overflow-x-auto mb-6 sm:mb-10" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}>
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = selectedProduct === tab.id;
@@ -57,7 +57,7 @@ export const AiProductsShowcase: React.FC = () => {
               <button
                 key={tab.id}
                 onClick={() => setSelectedProduct(tab.id as any)}
-                className={`flex items-center gap-2.5 px-4 sm:px-5 py-3 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all duration-200 ${
+                className={`flex items-center gap-2 px-3.5 sm:px-5 py-2.5 sm:py-3 min-h-[44px] rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all duration-200 cursor-pointer ${
                   isActive
                     ? "bg-[#0B1F3A] text-white shadow-md scale-[1.02]"
                     : "bg-slate-100 text-slate-700 hover:bg-slate-200/80"
@@ -80,41 +80,41 @@ export const AiProductsShowcase: React.FC = () => {
         </div>
 
         {/* Dynamic Display of the Selected Product */}
-        <div className="bg-[#F8FAFC] border border-slate-200/90 rounded-2xl p-6 sm:p-10 shadow-xs">
+        <div className="bg-[#F8FAFC] border border-slate-200/90 rounded-2xl p-4 sm:p-7 lg:p-10 shadow-xs">
           
           {/* 1. RUZHAA AI (with 100% Fully Visible Real Product Screenshot) */}
           {selectedProduct === "ruzhaa" && (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center text-left">
-              <div className="lg:col-span-5 space-y-5">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center text-left">
+              <div className="lg:col-span-5 space-y-4 sm:space-y-5">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-teal-50 border border-teal-200 text-xs font-mono font-bold text-[#00A88F]">
                   <span>UNDERSTAND // RUZHAA AI</span>
                 </div>
-                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#0B1F3A] tracking-tight leading-tight">
+                <h3 className="text-xl sm:text-3xl lg:text-4xl font-black text-[#0B1F3A] tracking-tight leading-tight text-balance">
                   Your Personal Financial Learning Assistant.
                 </h3>
-                <p className="text-base text-slate-600 leading-relaxed font-normal">
+                <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
                   Ruzhaa helps users demystify market jargon, explain complex financial filings, and provide context-aware pedagogical answers without confusing abbreviations.
                 </p>
-                <div className="space-y-3 pt-2 text-sm text-slate-700 font-medium">
+                <div className="space-y-2.5 sm:space-y-3 pt-1 sm:pt-2 text-xs sm:text-sm text-slate-700 font-medium">
                   <div className="flex items-start gap-2.5">
-                    <CheckCircle2 className="w-5 h-5 text-[#00A88F] shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-[#00A88F] shrink-0 mt-0.5" />
                     <span>Explain market concepts, balance sheet mechanics & ratios</span>
                   </div>
                   <div className="flex items-start gap-2.5">
-                    <CheckCircle2 className="w-5 h-5 text-[#00A88F] shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-[#00A88F] shrink-0 mt-0.5" />
                     <span>Context-aware assistance inside courses & learning modules</span>
                   </div>
                   <div className="flex items-start gap-2.5">
-                    <CheckCircle2 className="w-5 h-5 text-[#00A88F] shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-[#00A88F] shrink-0 mt-0.5" />
                     <span>Plain-language summaries of regulatory company disclosures</span>
                   </div>
                 </div>
-                <div className="pt-4 flex flex-wrap items-center gap-4">
+                <div className="pt-3 sm:pt-4 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
                   <a
                     href="https://www.ruzhaa.online/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-[#0B1F3A] hover:bg-[#132742] text-white text-sm font-bold rounded-xl shadow-md transition-all hover:scale-[1.02]"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 min-h-[44px] w-full sm:w-auto bg-[#0B1F3A] hover:bg-[#132742] text-white text-sm font-bold rounded-xl shadow-md transition-all hover:scale-[1.02]"
                   >
                     <span>Launch Ruzhaa AI Portal</span>
                     <ArrowRight className="w-4 h-4 text-[#00A88F]" />
@@ -123,7 +123,7 @@ export const AiProductsShowcase: React.FC = () => {
                     href="https://www.ruzhaa.online/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs font-mono text-[#00A88F] font-bold flex items-center gap-1 hover:underline"
+                    className="text-xs font-mono text-[#00A88F] font-bold flex items-center justify-center sm:justify-start gap-1 hover:underline py-1"
                   >
                     <span>www.ruzhaa.online</span>
                     <ExternalLink className="w-3 h-3" />
@@ -174,37 +174,37 @@ export const AiProductsShowcase: React.FC = () => {
 
           {/* 2. DHALEO AI (with 100% Fully Visible Real Product Screenshot) */}
           {selectedProduct === "dhaleo" && (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center text-left">
-              <div className="lg:col-span-5 space-y-5">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center text-left">
+              <div className="lg:col-span-5 space-y-4 sm:space-y-5">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-blue-50 border border-blue-200 text-xs font-mono font-bold text-blue-700">
                   <span>DISCOVER // DHALEO AI</span>
                 </div>
-                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#0B1F3A] tracking-tight leading-tight">
+                <h3 className="text-xl sm:text-3xl lg:text-4xl font-black text-[#0B1F3A] tracking-tight leading-tight text-balance">
                   Stock Screener for Smarter Discovery.
                 </h3>
-                <p className="text-base text-slate-600 leading-relaxed font-normal">
+                <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
                   Filter thousands of listed equities by empirical quantitative criteria: ROCE, P/E, 52W breakouts, and operating margin expansions. No speculative hype.
                 </p>
-                <div className="space-y-3 pt-2 text-sm text-slate-700 font-medium">
+                <div className="space-y-2.5 sm:space-y-3 pt-1 sm:pt-2 text-xs sm:text-sm text-slate-700 font-medium">
                   <div className="flex items-start gap-2.5">
-                    <CheckCircle2 className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 shrink-0 mt-0.5" />
                     <span>Multi-factor screener laboratory across Nifty 50 & broad indices</span>
                   </div>
                   <div className="flex items-start gap-2.5">
-                    <CheckCircle2 className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 shrink-0 mt-0.5" />
                     <span>Technical signal definitions: Golden Cross, Momentum Up, Breakouts</span>
                   </div>
                   <div className="flex items-start gap-2.5">
-                    <CheckCircle2 className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 shrink-0 mt-0.5" />
                     <span>Real-time Indian market intelligence hub with zero noise</span>
                   </div>
                 </div>
-                <div className="pt-4 flex flex-wrap items-center gap-4">
+                <div className="pt-3 sm:pt-4 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
                   <a
                     href="https://dhaleo.vercel.app/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-[#0B1F3A] hover:bg-[#132742] text-white text-sm font-bold rounded-xl shadow-md transition-all hover:scale-[1.02]"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 min-h-[44px] w-full sm:w-auto bg-[#0B1F3A] hover:bg-[#132742] text-white text-sm font-bold rounded-xl shadow-md transition-all hover:scale-[1.02]"
                   >
                     <span>Launch Dhaleo Screener</span>
                     <ArrowRight className="w-4 h-4 text-blue-400" />
@@ -213,7 +213,7 @@ export const AiProductsShowcase: React.FC = () => {
                     href="https://dhaleo.vercel.app/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs font-mono text-blue-600 font-bold flex items-center gap-1 hover:underline"
+                    className="text-xs font-mono text-blue-600 font-bold flex items-center justify-center sm:justify-start gap-1 hover:underline py-1"
                   >
                     <span>dhaleo.vercel.app</span>
                     <ExternalLink className="w-3 h-3" />
@@ -264,37 +264,37 @@ export const AiProductsShowcase: React.FC = () => {
 
           {/* 3. DETERMIND AI (with 100% Fully Visible Real Product Screenshot) */}
           {selectedProduct === "determind" && (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center text-left">
-              <div className="lg:col-span-5 space-y-5">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center text-left">
+              <div className="lg:col-span-5 space-y-4 sm:space-y-5">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-50 border border-emerald-200 text-xs font-mono font-bold text-emerald-700">
                   <span>REFLECT // DETERMIND AI</span>
                 </div>
-                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#0B1F3A] tracking-tight leading-tight">
+                <h3 className="text-xl sm:text-3xl lg:text-4xl font-black text-[#0B1F3A] tracking-tight leading-tight text-balance">
                   Understand Yourself Before You Invest.
                 </h3>
-                <p className="text-base text-slate-600 leading-relaxed font-normal">
+                <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
                   Most investing mistakes stem from psychology rather than financial formulas. Determind diagnostics evaluate risk endurance, emotional discipline, and cognitive blind spots.
                 </p>
-                <div className="space-y-3 pt-2 text-sm text-slate-700 font-medium">
+                <div className="space-y-2.5 sm:space-y-3 pt-1 sm:pt-2 text-xs sm:text-sm text-slate-700 font-medium">
                   <div className="flex items-start gap-2.5">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 shrink-0 mt-0.5" />
                     <span>Comprehensive behavioral risk assessment & human capital analytics</span>
                   </div>
                   <div className="flex items-start gap-2.5">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 shrink-0 mt-0.5" />
                     <span>Personalized learning progression roadmap & executive reports</span>
                   </div>
                   <div className="flex items-start gap-2.5">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 shrink-0 mt-0.5" />
                     <span>Emotional bias detection & real-time drawdown resilience scoring</span>
                   </div>
                 </div>
-                <div className="pt-4 flex flex-wrap items-center gap-4">
+                <div className="pt-3 sm:pt-4 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
                   <a
                     href="https://determind.online/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-[#0B1F3A] hover:bg-[#132742] text-white text-sm font-bold rounded-xl shadow-md transition-all hover:scale-[1.02]"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 min-h-[44px] w-full sm:w-auto bg-[#0B1F3A] hover:bg-[#132742] text-white text-sm font-bold rounded-xl shadow-md transition-all hover:scale-[1.02]"
                   >
                     <span>Launch Determind AI Portal</span>
                     <ArrowRight className="w-4 h-4 text-emerald-400" />
@@ -303,7 +303,7 @@ export const AiProductsShowcase: React.FC = () => {
                     href="https://determind.online/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs font-mono text-emerald-700 font-bold flex items-center gap-1 hover:underline"
+                    className="text-xs font-mono text-emerald-700 font-bold flex items-center justify-center sm:justify-start gap-1 hover:underline py-1"
                   >
                     <span>determind.online</span>
                     <ExternalLink className="w-3 h-3" />

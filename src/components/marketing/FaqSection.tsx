@@ -39,24 +39,24 @@ export const FaqSection: React.FC = () => {
   };
 
   return (
-    <section id="faq" className="py-20 bg-white border-b border-slate-200">
+    <section className="py-12 sm:py-16 lg:py-20 bg-white border-b border-slate-200">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
-        <div className="text-center mb-14">
+        <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-14">
           <div className="text-xs font-mono font-semibold uppercase tracking-widest text-[#00A88F] mb-3">
-            QUESTIONS & CLARITY
+            CLARITY & DISCLOSURE
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold text-[#0B1F3A] tracking-tight">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0B1F3A] tracking-tight text-balance">
             Frequently Asked Questions.
           </h2>
-          <p className="mt-3 text-base text-[#667085]">
+          <p className="mt-2.5 sm:mt-3 text-sm sm:text-base text-[#667085] text-balance">
             Straightforward answers regarding our educational philosophy, technology, and operating standards.
           </p>
         </div>
 
         {/* Accordion List */}
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           {faqs.map((faq, idx) => {
             const isOpen = openIndex === idx;
             return (
@@ -66,7 +66,7 @@ export const FaqSection: React.FC = () => {
               >
                 <button
                   onClick={() => toggle(idx)}
-                  className="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 font-semibold text-[#0B1F3A] hover:text-[#00A88F] transition-colors cursor-pointer"
+                  className="w-full p-4 sm:p-5 min-h-[48px] text-left flex items-center justify-between gap-4 font-semibold text-[#0B1F3A] hover:text-[#00A88F] transition-colors cursor-pointer"
                 >
                   <span className="text-sm sm:text-base font-bold">{faq.question}</span>
                   <ChevronDown

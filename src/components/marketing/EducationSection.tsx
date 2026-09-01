@@ -97,26 +97,26 @@ export const EducationSection: React.FC = () => {
   ];
 
   return (
-    <section id="courses" className="py-20 bg-white border-b border-slate-200">
+    <section id="courses" className="py-12 sm:py-16 lg:py-20 bg-white border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 sm:mb-16 gap-4 sm:gap-6 text-left">
           <div>
             <div className="text-xs font-mono font-semibold uppercase tracking-widest text-[#00A88F] mb-3">
               STRUCTURED CURRICULUM
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-bold text-[#0B1F3A] tracking-tight">
+            <h2 className="text-2xl sm:text-3xl lg:text-[42px] font-bold text-[#0B1F3A] tracking-tight text-balance">
               Six Levels of Structured Mastery.
             </h2>
-            <p className="mt-3 text-base text-[#667085] max-w-2xl">
+            <p className="mt-2.5 sm:mt-3 text-sm sm:text-base text-[#667085] max-w-2xl">
               An institutional curriculum engineered to transition an absolute beginner into a methodical, self-reliant market participant.
             </p>
           </div>
 
           <Link
             href="/onboarding"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-[#0B1F3A] hover:text-[#00A88F] group"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-[#0B1F3A] hover:text-[#00A88F] group self-start md:self-auto"
           >
             <span>Assess your starting level</span>
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1 text-[#00A88F]" />
@@ -124,11 +124,11 @@ export const EducationSection: React.FC = () => {
         </div>
 
         {/* 6 Levels Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-8">
           {levels.map((item) => (
             <div
               key={item.level}
-              className="bg-[#F6F8FA] border border-slate-200/90 rounded-lg p-6 flex flex-col justify-between hover:border-slate-300 hover:shadow-xs transition-all"
+              className="bg-[#F6F8FA] border border-slate-200/90 rounded-2xl p-5 sm:p-6 flex flex-col justify-between hover:border-slate-300 hover:shadow-xs transition-all text-left"
             >
               <div>
                 <div className="flex items-center justify-between mb-3">

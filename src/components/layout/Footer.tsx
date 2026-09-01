@@ -8,9 +8,9 @@ export const Footer: React.FC = () => {
     <footer className="bg-[#08111F] text-slate-300 pt-16 pb-12 border-t border-[#1E2D44] font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-6 gap-8 lg:gap-10 pb-12 border-b border-slate-800">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-8 lg:gap-10 pb-12 border-b border-slate-800">
           {/* Brand Column */}
-          <div className="col-span-2 lg:col-span-2 space-y-4 text-left">
+          <div className="sm:col-span-2 lg:col-span-2 space-y-4 text-left">
             <Logo variant="light" size="md" />
             <p className="text-sm text-slate-400 max-w-sm leading-relaxed">
               Heal Your Wealth. Build Your Freedom. A premier fintech education and decision-support ecosystem helping individuals cultivate structured market discipline and intelligence.
@@ -28,27 +28,27 @@ export const Footer: React.FC = () => {
             </h4>
             <ul className="space-y-2.5 text-sm font-medium">
               <li>
-                <Link href="/#courses" className="hover:text-[#00A88F] transition-colors">
+                <Link href="/#courses" className="hover:text-[#00A88F] transition-colors py-1 inline-block">
                   Foundation Series
                 </Link>
               </li>
               <li>
-                <Link href="/#courses" className="hover:text-[#00A88F] transition-colors">
+                <Link href="/#courses" className="hover:text-[#00A88F] transition-colors py-1 inline-block">
                   Technical Analysis
                 </Link>
               </li>
               <li>
-                <Link href="/#courses" className="hover:text-[#00A88F] transition-colors">
+                <Link href="/#courses" className="hover:text-[#00A88F] transition-colors py-1 inline-block">
                   Fundamental Valuation
                 </Link>
               </li>
               <li>
-                <Link href="/#courses" className="hover:text-[#00A88F] transition-colors">
+                <Link href="/#courses" className="hover:text-[#00A88F] transition-colors py-1 inline-block">
                   Portfolio Structuring
                 </Link>
               </li>
               <li>
-                <Link href="/#courses" className="hover:text-[#00A88F] transition-colors">
+                <Link href="/#courses" className="hover:text-[#00A88F] transition-colors py-1 inline-block">
                   Advanced Derivatives
                 </Link>
               </li>
@@ -66,7 +66,7 @@ export const Footer: React.FC = () => {
                   href="https://www.ruzhaa.online/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-[#00A88F] transition-colors flex items-center justify-between"
+                  className="hover:text-[#00A88F] transition-colors flex items-center justify-between py-1"
                 >
                   <span>Ruzhaa AI</span>
                   <span className="text-[10px] text-teal-400 font-mono font-bold">LIVE ↗</span>
@@ -77,7 +77,7 @@ export const Footer: React.FC = () => {
                   href="https://dhaleo.vercel.app/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-[#00A88F] transition-colors flex items-center justify-between"
+                  className="hover:text-[#00A88F] transition-colors flex items-center justify-between py-1"
                 >
                   <span>Dhaleo AI</span>
                   <span className="text-[10px] text-teal-400 font-mono font-bold">LIVE ↗</span>
@@ -88,20 +88,20 @@ export const Footer: React.FC = () => {
                   href="https://determind.online/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-[#00A88F] transition-colors flex items-center justify-between"
+                  className="hover:text-[#00A88F] transition-colors flex items-center justify-between py-1"
                 >
                   <span>Determind AI</span>
                   <span className="text-[10px] text-teal-400 font-mono font-bold">LIVE ↗</span>
                 </a>
               </li>
               <li>
-                <div className="text-slate-400 flex items-center justify-between">
+                <div className="text-slate-400 flex items-center justify-between py-1">
                   <span>Jaro AI</span>
                   <span className="text-[9px] text-amber-400/90 font-mono bg-amber-950/40 px-1.5 py-0.5 rounded border border-amber-800/40 font-bold">COMING SOON</span>
                 </div>
               </li>
               <li>
-                <div className="text-slate-400 flex items-center justify-between">
+                <div className="text-slate-400 flex items-center justify-between py-1">
                   <span>Dhruvan AI</span>
                   <span className="text-[9px] text-amber-400/90 font-mono bg-amber-950/40 px-1.5 py-0.5 rounded border border-amber-800/40 font-bold">COMING SOON</span>
                 </div>
@@ -116,27 +116,27 @@ export const Footer: React.FC = () => {
             </h4>
             <ul className="space-y-2.5 text-sm font-medium">
               <li>
-                <Link href="/markets/overview" className="hover:text-[#00A88F] transition-colors">
+                <Link href="/markets/overview" className="hover:text-[#00A88F] transition-colors py-1 inline-block">
                   Market Terminal
                 </Link>
               </li>
               <li>
-                <Link href="/#community" className="hover:text-[#00A88F] transition-colors">
+                <Link href="/#community" className="hover:text-[#00A88F] transition-colors py-1 inline-block">
                   Learning Groups
                 </Link>
               </li>
               <li>
-                <Link href="/#pricing" className="hover:text-[#00A88F] transition-colors">
+                <Link href="/#pricing" className="hover:text-[#00A88F] transition-colors py-1 inline-block">
                   Tier Membership
                 </Link>
               </li>
               <li>
-                <Link href="/#faq" className="hover:text-[#00A88F] transition-colors">
+                <Link href="/#faq" className="hover:text-[#00A88F] transition-colors py-1 inline-block">
                   Frequently Asked Questions
                 </Link>
               </li>
               <li>
-                <Link href="/disclaimer" className="hover:text-[#00A88F] transition-colors">
+                <Link href="/disclaimer" className="hover:text-[#00A88F] transition-colors py-1 inline-block">
                   Risk Disclosures
                 </Link>
               </li>
@@ -151,15 +151,15 @@ export const Footer: React.FC = () => {
             <p className="text-xs text-slate-400 mb-3 leading-relaxed">
               Receive structured weekly market insights and pedagogical case studies. Zero spam.
             </p>
-            <form onSubmit={(e) => e.preventDefault()} className="space-y-2">
+            <form onSubmit={(e) => e.preventDefault()} className="space-y-2.5">
               <input
                 type="email"
                 placeholder="investor@domain.com"
-                className="w-full text-xs px-3.5 py-2.5 bg-[#0E1A2B] border border-slate-700 rounded-xl text-slate-200 placeholder-slate-500 focus:outline-none focus:border-[#00A88F]"
+                className="w-full text-base sm:text-xs px-3.5 py-2.5 min-h-[44px] bg-[#0E1A2B] border border-slate-700 rounded-xl text-slate-200 placeholder-slate-500 focus:outline-none focus:border-[#00A88F]"
               />
               <button
                 type="submit"
-                className="w-full text-xs font-bold py-2.5 bg-[#00A88F] hover:bg-[#008B76] text-white rounded-xl transition-all shadow-sm cursor-pointer"
+                className="w-full text-xs font-bold py-3 min-h-[44px] bg-[#00A88F] hover:bg-[#008B76] text-white rounded-xl transition-all shadow-sm cursor-pointer"
               >
                 Join Briefing
               </button>

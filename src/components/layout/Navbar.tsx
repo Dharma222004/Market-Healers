@@ -16,13 +16,14 @@ export const Navbar: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
+      if (window.scrollY > 8) {
         setScrolled(true);
       } else {
         setScrolled(false);
       }
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -58,13 +59,13 @@ export const Navbar: React.FC = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-50 font-sans">
+    <header className="sticky top-0 z-50 font-sans w-full">
       <MarketTicker />
       <div
-        className={`transition-all duration-200 ${
+        className={`w-full transition-all duration-200 ${
           scrolled
-            ? "bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-sm py-3"
-            : "bg-white/90 backdrop-blur-sm border-b border-slate-200/60 py-3.5"
+            ? "bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-md py-2.5"
+            : "bg-white/90 backdrop-blur-sm border-b border-slate-200/70 py-3.5"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

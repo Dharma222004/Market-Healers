@@ -5,17 +5,27 @@ export interface PreciousMetalsQuote {
   symbol: string;
   price_inr_per_gram?: number;
   price_inr_per_10g?: number;
+  price_per_gram?: number;
+  price_per_10g?: number;
+  price_22k_per_gram?: number;
+  price_22k_per_10g?: number;
+  price_per_kg?: number;
   price_usd_per_troy_ounce?: number;
   price_usd_per_gram?: number;
   change_percent?: number;
+  change?: number;
   usd_inr?: number;
   contract?: string;
   unit?: string;
   source?: string;
+  purity?: string;
 }
 
 export interface PreciousMetalsOverview {
   updated_at: string;
+  gold_24k?: any;
+  gold_22k?: any;
+  gold_18k?: any;
   gold: PreciousMetalsQuote;
   silver: PreciousMetalsQuote;
 }
@@ -93,31 +103,50 @@ class YahooMarketDataService implements IMarketDataService {
 
   private cachedMetals: PreciousMetalsOverview = {
     updated_at: new Date().toISOString(),
+    gold_24k: {
+      name: "24K Gold",
+      karat: "24K",
+      purity: "99.9% Pure Gold",
+      price_per_gram: 15202,
+      price_per_8g: 121616,
+      price_per_10g: 152020,
+      change: 108,
+      change_percent: 0.71,
+      currency: "INR",
+    },
+    gold_22k: {
+      name: "22K Gold",
+      karat: "22K",
+      purity: "91.6% Hallmark Gold",
+      price_per_gram: 13935,
+      price_per_8g: 111480,
+      price_per_10g: 139350,
+      change: 99,
+      change_percent: 0.71,
+      currency: "INR",
+    },
     gold: {
       name: "Gold",
       symbol: "GC=F",
-      contract: "COMEX Gold Futures",
-      price_usd_per_troy_ounce: 4422.80,
-      price_usd_per_gram: 142.20,
-      price_inr_per_gram: 13500.12,
-      price_inr_per_10g: 135001.19,
-      change_percent: -0.19,
-      usd_inr: 94.94,
+      price_inr_per_gram: 15202,
+      price_inr_per_10g: 152020,
+      change_percent: 0.71,
       unit: "gram",
-      source: "Yahoo Finance",
+      source: "Indian Retail Spot Rates (IBJA)",
     },
     silver: {
       name: "Silver",
       symbol: "SI=F",
-      contract: "COMEX Silver Futures",
-      price_usd_per_troy_ounce: 65.68,
-      price_usd_per_gram: 2.11,
-      price_inr_per_gram: 200.50,
-      price_inr_per_10g: 2004.96,
-      change_percent: -0.81,
-      usd_inr: 94.94,
+      purity: ".999 Fine Silver",
+      price_per_gram: 250,
+      price_per_10g: 2500,
+      price_per_kg: 250000,
+      price_inr_per_gram: 250,
+      price_inr_per_10g: 2500,
+      change: 1.60,
+      change_percent: 0.64,
       unit: "gram",
-      source: "Yahoo Finance",
+      source: "Indian Retail Spot Rates (IBJA)",
     },
   };
 

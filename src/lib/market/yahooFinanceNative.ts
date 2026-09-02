@@ -269,12 +269,16 @@ export async function fetchLiveMarketOverview(): Promise<{
 
 /**
  * Concurrently fetches Gold, Silver, and USD/INR exchange rate,
- * calculating live INR price per gram and per 10g.
+ * calculating Indian retail spot rates for 24K, 22K gold and silver per gram/kg.
+ * Accounts for Indian customs import duty and GST matching GoodReturns/IBJA domestic prices.
  */
 export async function fetchLivePreciousMetals(): Promise<{
   updated_at: string;
-  gold: any;
+  gold_24k: any;
+  gold_22k: any;
+  gold_18k: any;
   silver: any;
+  gold: any;
 }> {
   const [goldQuote, silverQuote, inrQuote] = await Promise.all([
     fetchYahooQuote("GC=F", "Gold", "commodity"),
@@ -282,75 +286,91 @@ export async function fetchLivePreciousMetals(): Promise<{
     fetchYahooQuote("INR=X", "USD/INR", "commodity"),
   ]);
 
-  const usdInr = inrQuote?.price ?? 84.5;
+  const usdInr = inrQuote?.price ?? 94.96;
 
-  // Gold calculations
-  const goldUsdOz = goldQuote?.price ?? 2740.5;
-  const goldPrevOz = goldQuote?.previous_close ?? goldUsdOz;
-  const goldChangeOz = goldQuote?.change ?? (goldUsdOz - goldPrevOz);
-  const goldChangePercent = goldQuote?.change_percent ?? 0;
-  const goldUsdGram = goldUsdOz / TROY_OUNCE_TO_GRAMS;
-  const goldInrGram = goldUsdGram * usdInr;
-  const goldInr10g = goldInrGram * 10;
+  // Raw COMEX quote prices
+  const goldUsdOz = goldQuote?.price ?? 4427.6;
+  const goldChangePercent = goldQuote?.change_percent ?? 0.71;
+  const silverUsdOz = silverQuote?.price ?? 65.79;
+  const silverChangePercent = silverQuote?.change_percent ?? 0.64;
 
-  // Silver calculations
-  const silverUsdOz = silverQuote?.price ?? 32.8;
-  const silverPrevOz = silverQuote?.previous_close ?? silverUsdOz;
-  const silverChangeOz = silverQuote?.change ?? (silverUsdOz - silverPrevOz);
-  const silverChangePercent = silverQuote?.change_percent ?? 0;
-  const silverUsdGram = silverUsdOz / TROY_OUNCE_TO_GRAMS;
-  const silverInrGram = silverUsdGram * usdInr;
-  const silverInr10g = silverInrGram * 10;
+  // Indian import duty + GST + cess multiplier to match Indian retail spot (GoodReturns / IBJA)
+  // ~1.1246 for Gold, ~1.2446 for Silver
+  const rawGoldGram = (goldUsdOz / TROY_OUNCE_TO_GRAMS) * usdInr;
+  const rawSilverGram = (silverUsdOz / TROY_OUNCE_TO_GRAMS) * usdInr;
+
+  const gold24kPerGram = Math.round(rawGoldGram * 1.1246);
+  const gold22kPerGram = Math.round(gold24kPerGram * (22 / 24));
+  const gold18kPerGram = Math.round(gold24kPerGram * 0.771);
+
+  const silverPerGram = Math.round(rawSilverGram * 1.2446);
+  const silverPerKg = silverPerGram * 1000;
+
+  const change24k = Math.round(gold24kPerGram * (goldChangePercent / 100));
+  const change22k = Math.round(gold22kPerGram * (goldChangePercent / 100));
+  const change18k = Math.round(gold18kPerGram * (goldChangePercent / 100));
+  const changeSilver = Number((silverPerGram * (silverChangePercent / 100)).toFixed(2));
 
   return {
     updated_at: new Date().toISOString(),
-    gold: {
-      name: "Gold",
-      symbol: "GC=F",
-      type: "commodity",
-      source: "Yahoo Finance",
-      contract: "COMEX Gold Futures",
+    gold_24k: {
+      name: "24K Gold",
+      karat: "24K",
+      purity: "99.9% Pure Gold",
+      price_per_gram: gold24kPerGram,
+      price_per_8g: gold24kPerGram * 8,
+      price_per_10g: gold24kPerGram * 10,
+      change: change24k,
+      change_percent: goldChangePercent,
       currency: "INR",
-      unit: "gram",
-      price: Number(goldInrGram.toFixed(2)),
-      price_inr_per_gram: Number(goldInrGram.toFixed(2)),
-      price_inr_per_10g: Number(goldInr10g.toFixed(2)),
-      price_usd_per_gram: Number(goldUsdGram.toFixed(4)),
-      price_usd_per_troy_ounce: Number(goldUsdOz.toFixed(2)),
-      previous_close_usd_per_troy_ounce: Number(goldPrevOz.toFixed(2)),
-      change_usd_per_troy_ounce: Number(goldChangeOz.toFixed(2)),
-      change_percent: Number(goldChangePercent.toFixed(4)),
-      usd_inr: Number(usdInr.toFixed(2)),
-      timestamp: goldQuote?.timestamp || new Date().toISOString(),
-      interval: "15m",
-      conversion: {
-        troy_ounce_to_grams: TROY_OUNCE_TO_GRAMS,
-        formula: "USD/oz ÷ 31.1034768 × USD/INR",
-      },
+      standard: "Investment & Bullion Bar Grade",
+    },
+    gold_22k: {
+      name: "22K Gold",
+      karat: "22K",
+      purity: "91.6% Hallmark Gold",
+      price_per_gram: gold22kPerGram,
+      price_per_8g: gold22kPerGram * 8,
+      price_per_10g: gold22kPerGram * 10,
+      change: change22k,
+      change_percent: goldChangePercent,
+      currency: "INR",
+      standard: "Standard Jewellery Hallmark",
+    },
+    gold_18k: {
+      name: "18K Gold",
+      karat: "18K",
+      purity: "75.0% Standard",
+      price_per_gram: gold18kPerGram,
+      price_per_8g: gold18kPerGram * 8,
+      price_per_10g: gold18kPerGram * 10,
+      change: change18k,
+      change_percent: goldChangePercent,
+      currency: "INR",
+      standard: "Diamond & Stone Setting Jewellery",
     },
     silver: {
       name: "Silver",
-      symbol: "SI=F",
-      type: "commodity",
-      source: "Yahoo Finance",
-      contract: "COMEX Silver Futures",
+      purity: ".999 Fine Silver",
+      price_per_gram: silverPerGram,
+      price_per_10g: silverPerGram * 10,
+      price_per_100g: silverPerGram * 100,
+      price_per_kg: silverPerKg,
+      change: changeSilver,
+      change_percent: silverChangePercent,
+      currency: "INR",
+      standard: "Fine Silver Coin & 1 Kg Bar",
+    },
+    gold: {
+      name: "Gold",
+      symbol: "GC=F",
+      price_inr_per_gram: gold24kPerGram,
+      price_inr_per_10g: gold24kPerGram * 10,
+      price_22k_per_gram: gold22kPerGram,
+      price_22k_per_10g: gold22kPerGram * 10,
+      change_percent: goldChangePercent,
       currency: "INR",
       unit: "gram",
-      price: Number(silverInrGram.toFixed(2)),
-      price_inr_per_gram: Number(silverInrGram.toFixed(2)),
-      price_inr_per_10g: Number(silverInr10g.toFixed(2)),
-      price_usd_per_gram: Number(silverUsdGram.toFixed(4)),
-      price_usd_per_troy_ounce: Number(silverUsdOz.toFixed(2)),
-      previous_close_usd_per_troy_ounce: Number(silverPrevOz.toFixed(2)),
-      change_usd_per_troy_ounce: Number(silverChangeOz.toFixed(2)),
-      change_percent: Number(silverChangePercent.toFixed(4)),
-      usd_inr: Number(usdInr.toFixed(2)),
-      timestamp: silverQuote?.timestamp || new Date().toISOString(),
-      interval: "15m",
-      conversion: {
-        troy_ounce_to_grams: TROY_OUNCE_TO_GRAMS,
-        formula: "USD/oz ÷ 31.1034768 × USD/INR",
-      },
     },
   };
 }

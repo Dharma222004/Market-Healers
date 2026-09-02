@@ -46,27 +46,34 @@ export default function MarketOverviewPage() {
   ]);
 
   const [metals, setMetals] = useState<any>({
-    gold: {
-      name: "Gold",
-      symbol: "GC=F",
-      price_usd_per_troy_ounce: 4427.60,
-      price_inr_per_gram: 13517.62,
-      price_inr_per_10g: 135176.17,
+    gold_24k: {
+      name: "24K Gold",
+      karat: "24K",
+      purity: "99.9% Pure Gold",
+      price_per_gram: 15202,
+      price_per_8g: 121616,
+      price_per_10g: 152020,
+      change: 108,
       change_percent: 0.71,
-      usd_inr: 94.96,
-      unit: "gram",
-      contract: "COMEX Gold Futures",
+    },
+    gold_22k: {
+      name: "22K Gold",
+      karat: "22K",
+      purity: "91.6% Hallmark Gold",
+      price_per_gram: 13935,
+      price_per_8g: 111480,
+      price_per_10g: 139350,
+      change: 99,
+      change_percent: 0.71,
     },
     silver: {
       name: "Silver",
-      symbol: "SI=F",
-      price_usd_per_troy_ounce: 65.79,
-      price_inr_per_gram: 200.86,
-      price_inr_per_10g: 2008.59,
+      purity: ".999 Fine Silver",
+      price_per_gram: 250,
+      price_per_10g: 2500,
+      price_per_kg: 250000,
+      change: 1.60,
       change_percent: 0.64,
-      usd_inr: 94.96,
-      unit: "gram",
-      contract: "COMEX Silver Futures",
     },
   });
 
@@ -109,10 +116,40 @@ export default function MarketOverviewPage() {
       }
     });
 
-    // Subscribe to live precious metals (Gold & Silver 24/7)
+    // Subscribe to live precious metals (Gold 24K, 22K & Silver domestic rates)
     const unsubMetals = marketDataService.subscribeToMetals((data) => {
-      if (data && data.gold && data.silver) {
-        setMetals(data);
+      if (data) {
+        setMetals({
+          gold_24k: data.gold_24k || {
+            name: "24K Gold",
+            karat: "24K",
+            purity: "99.9% Pure Gold",
+            price_per_gram: data.gold?.price_inr_per_gram || 15202,
+            price_per_8g: (data.gold?.price_inr_per_gram || 15202) * 8,
+            price_per_10g: data.gold?.price_inr_per_10g || 152020,
+            change: 108,
+            change_percent: data.gold?.change_percent || 0.71,
+          },
+          gold_22k: data.gold_22k || {
+            name: "22K Gold",
+            karat: "22K",
+            purity: "91.6% Hallmark Gold",
+            price_per_gram: data.gold?.price_22k_per_gram || Math.round((data.gold?.price_inr_per_gram || 15202) * (22 / 24)),
+            price_per_8g: Math.round((data.gold?.price_inr_per_gram || 15202) * (22 / 24)) * 8,
+            price_per_10g: Math.round((data.gold?.price_inr_per_gram || 15202) * (22 / 24)) * 10,
+            change: 99,
+            change_percent: data.gold?.change_percent || 0.71,
+          },
+          silver: data.silver || {
+            name: "Silver",
+            purity: ".999 Fine Silver",
+            price_per_gram: 250,
+            price_per_10g: 2500,
+            price_per_kg: 250000,
+            change: 1.60,
+            change_percent: 0.64,
+          },
+        });
       }
     });
 
@@ -202,7 +239,7 @@ export default function MarketOverviewPage() {
         </div>
       </div>
 
-      {/* Precious Metals (Gold & Silver) - Highlighting Price per Gram */}
+      {/* Precious Metals (Gold & Silver Indian Retail Rates) - Dedicated 24K, 22K & Silver Cards */}
       <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-2xs space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-200">
           <div>
@@ -212,81 +249,132 @@ export default function MarketOverviewPage() {
               </span>
               <span className="text-[10px] font-mono text-slate-400">&bull;</span>
               <span className="text-[11px] font-medium text-slate-500">
-                COMEX Futures &bull; Live Price per Gram &amp; 10 Grams
+                Indian Domestic Retail Spot (GoodReturns / IBJA Benchmark)
               </span>
             </div>
             <h2 className="text-base font-bold text-[#0B1F3A] mt-0.5">
-              Precious Metals Real-Time Valuation
+              Precious Metals Real-Time Valuation (Gold &amp; Silver)
             </h2>
           </div>
           <span className="text-[10px] font-mono text-[#00A88F] bg-teal-50 px-2 py-0.5 rounded border border-teal-200/60 self-start sm:self-auto">
-            Troy Ounce: 31.1035g &bull; 24/7 Live Valuation
+            All Rates in INR (₹) &bull; Live Per-Gram Pricing
           </span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Gold Card */}
-          <div className="p-5 rounded-xl bg-gradient-to-br from-[#FDFBF5] to-white border border-amber-200/80 shadow-2xs space-y-3">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* 1. 24K Gold Card */}
+          <div className="p-5 rounded-xl bg-gradient-to-br from-[#FCF9EE] to-white border border-amber-300/80 shadow-2xs space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <span className="w-3 h-3 rounded-full bg-[#C9A227] shadow-xs" />
-                <span className="font-bold text-sm text-[#0B1F3A]">GOLD (COMEX)</span>
-                <span className="text-[10px] font-mono text-slate-400">{metals.gold?.symbol || "GC=F"}</span>
+                <span className="font-bold text-sm text-[#0B1F3A]">24K GOLD /g</span>
+                <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-100/80 text-amber-800 font-semibold">
+                  99.9% Pure
+                </span>
               </div>
               <span
                 className={`text-xs font-mono font-semibold px-2 py-0.5 rounded ${
-                  (metals.gold?.change_percent || 0) >= 0
+                  (metals.gold_24k?.change_percent || 0) >= 0
                     ? "text-emerald-700 bg-emerald-50"
                     : "text-rose-700 bg-rose-50"
                 }`}
               >
-                {(metals.gold?.change_percent || 0) >= 0 ? "+" : ""}
-                {(metals.gold?.change_percent || 0).toFixed(2)}%
+                {(metals.gold_24k?.change_percent || 0) >= 0 ? "+" : ""}
+                {(metals.gold_24k?.change_percent || 0).toFixed(2)}%
+                {metals.gold_24k?.change ? ` (${metals.gold_24k.change >= 0 ? "+" : ""}₹${metals.gold_24k.change})` : ""}
               </span>
             </div>
 
             {/* Price Per Gram Highlighted */}
             <div className="mt-2">
               <span className="text-[10px] font-mono uppercase tracking-wider text-amber-800 font-semibold block">
-                Live Price per Gram (24K Pure)
+                24 Karat Pure Gold Rate
               </span>
               <div className="flex items-baseline gap-2 mt-0.5">
                 <span className="text-2xl sm:text-3xl font-bold font-mono text-[#0B1F3A]">
-                  ₹{(metals.gold?.price_inr_per_gram || 13543.87).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  ₹{(metals.gold_24k?.price_per_gram || 15202).toLocaleString("en-IN")}
                 </span>
                 <span className="text-xs font-bold font-mono text-[#C9A227]">/ 1 Gram</span>
               </div>
             </div>
 
-            <div className="pt-3 border-t border-amber-100 grid grid-cols-3 gap-2 text-[11px] font-mono">
+            <div className="pt-3 border-t border-amber-100/80 grid grid-cols-2 gap-2 text-[11px] font-mono">
+              <div>
+                <span className="text-slate-400 block text-[9px]">8 GRAMS (1 SOVEREIGN)</span>
+                <span className="font-bold text-slate-900">
+                  ₹{(metals.gold_24k?.price_per_8g || (metals.gold_24k?.price_per_gram || 15202) * 8).toLocaleString("en-IN")}
+                </span>
+              </div>
               <div>
                 <span className="text-slate-400 block text-[9px]">10 GRAMS RATE</span>
                 <span className="font-bold text-slate-900">
-                  ₹{(metals.gold?.price_inr_per_10g || 135438.73).toLocaleString("en-IN", { maximumFractionDigits: 2 })}
-                </span>
-              </div>
-              <div>
-                <span className="text-slate-400 block text-[9px]">USD / TROY OZ</span>
-                <span className="font-semibold text-slate-800">
-                  ${(metals.gold?.price_usd_per_troy_ounce || 4436.20).toFixed(2)}
-                </span>
-              </div>
-              <div>
-                <span className="text-slate-400 block text-[9px]">USD/INR SPOT</span>
-                <span className="font-semibold text-[#00A88F]">
-                  ₹{(metals.gold?.usd_inr || 94.96).toFixed(2)}
+                  ₹{(metals.gold_24k?.price_per_10g || (metals.gold_24k?.price_per_gram || 15202) * 10).toLocaleString("en-IN")}
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Silver Card */}
+          {/* 2. 22K Gold Card */}
+          <div className="p-5 rounded-xl bg-gradient-to-br from-[#FFFDF5] to-white border border-amber-200/90 shadow-2xs space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="w-3 h-3 rounded-full bg-amber-500 shadow-xs" />
+                <span className="font-bold text-sm text-[#0B1F3A]">22K GOLD /g</span>
+                <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-100/80 text-amber-800 font-semibold">
+                  91.6% Hallmark
+                </span>
+              </div>
+              <span
+                className={`text-xs font-mono font-semibold px-2 py-0.5 rounded ${
+                  (metals.gold_22k?.change_percent || 0) >= 0
+                    ? "text-emerald-700 bg-emerald-50"
+                    : "text-rose-700 bg-rose-50"
+                }`}
+              >
+                {(metals.gold_22k?.change_percent || 0) >= 0 ? "+" : ""}
+                {(metals.gold_22k?.change_percent || 0).toFixed(2)}%
+                {metals.gold_22k?.change ? ` (${metals.gold_22k.change >= 0 ? "+" : ""}₹${metals.gold_22k.change})` : ""}
+              </span>
+            </div>
+
+            {/* Price Per Gram Highlighted */}
+            <div className="mt-2">
+              <span className="text-[10px] font-mono uppercase tracking-wider text-amber-800 font-semibold block">
+                22 Karat Jewellery Gold Rate
+              </span>
+              <div className="flex items-baseline gap-2 mt-0.5">
+                <span className="text-2xl sm:text-3xl font-bold font-mono text-[#0B1F3A]">
+                  ₹{(metals.gold_22k?.price_per_gram || 13935).toLocaleString("en-IN")}
+                </span>
+                <span className="text-xs font-bold font-mono text-amber-600">/ 1 Gram</span>
+              </div>
+            </div>
+
+            <div className="pt-3 border-t border-amber-100/80 grid grid-cols-2 gap-2 text-[11px] font-mono">
+              <div>
+                <span className="text-slate-400 block text-[9px]">8 GRAMS (1 PAVAN)</span>
+                <span className="font-bold text-slate-900">
+                  ₹{(metals.gold_22k?.price_per_8g || (metals.gold_22k?.price_per_gram || 13935) * 8).toLocaleString("en-IN")}
+                </span>
+              </div>
+              <div>
+                <span className="text-slate-400 block text-[9px]">10 GRAMS RATE</span>
+                <span className="font-bold text-slate-900">
+                  ₹{(metals.gold_22k?.price_per_10g || (metals.gold_22k?.price_per_gram || 13935) * 10).toLocaleString("en-IN")}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* 3. Silver Card */}
           <div className="p-5 rounded-xl bg-gradient-to-br from-slate-50 to-white border border-slate-200 shadow-2xs space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <span className="w-3 h-3 rounded-full bg-slate-400 shadow-xs" />
-                <span className="font-bold text-sm text-[#0B1F3A]">SILVER (COMEX)</span>
-                <span className="text-[10px] font-mono text-slate-400">{metals.silver?.symbol || "SI=F"}</span>
+                <span className="font-bold text-sm text-[#0B1F3A]">SILVER /g &amp; /kg</span>
+                <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 text-slate-700 font-semibold">
+                  .999 Fine
+                </span>
               </div>
               <span
                 className={`text-xs font-mono font-semibold px-2 py-0.5 rounded ${
@@ -303,33 +391,27 @@ export default function MarketOverviewPage() {
             {/* Price Per Gram Highlighted */}
             <div className="mt-2">
               <span className="text-[10px] font-mono uppercase tracking-wider text-slate-600 font-semibold block">
-                Live Price per Gram (.999 Fine)
+                Live Silver Price per Gram
               </span>
               <div className="flex items-baseline gap-2 mt-0.5">
                 <span className="text-2xl sm:text-3xl font-bold font-mono text-[#0B1F3A]">
-                  ₹{(metals.silver?.price_inr_per_gram || 201.18).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  ₹{(metals.silver?.price_per_gram || 250).toLocaleString("en-IN")}
                 </span>
                 <span className="text-xs font-bold font-mono text-slate-600">/ 1 Gram</span>
               </div>
             </div>
 
-            <div className="pt-3 border-t border-slate-100 grid grid-cols-3 gap-2 text-[11px] font-mono">
+            <div className="pt-3 border-t border-slate-100 grid grid-cols-2 gap-2 text-[11px] font-mono">
               <div>
                 <span className="text-slate-400 block text-[9px]">10 GRAMS RATE</span>
                 <span className="font-bold text-slate-900">
-                  ₹{(metals.silver?.price_inr_per_10g || 2011.80).toFixed(2)}
+                  ₹{(metals.silver?.price_per_10g || (metals.silver?.price_per_gram || 250) * 10).toLocaleString("en-IN")}
                 </span>
               </div>
               <div>
-                <span className="text-slate-400 block text-[9px]">1 KG BAR RATE</span>
+                <span className="text-slate-400 block text-[9px]">1 KILOGRAM (1 KG BAR)</span>
                 <span className="font-bold text-[#00A88F]">
-                  ₹{((metals.silver?.price_inr_per_gram || 201.18) * 1000).toLocaleString("en-IN", { maximumFractionDigits: 2 })}
-                </span>
-              </div>
-              <div>
-                <span className="text-slate-400 block text-[9px]">USD / TROY OZ</span>
-                <span className="font-semibold text-slate-800">
-                  ${(metals.silver?.price_usd_per_troy_ounce || 65.89).toFixed(2)}
+                  ₹{(metals.silver?.price_per_kg || (metals.silver?.price_per_gram || 250) * 1000).toLocaleString("en-IN")}
                 </span>
               </div>
             </div>

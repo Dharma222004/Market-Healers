@@ -35,9 +35,6 @@ export const Topbar: React.FC<TopbarProps> = ({ onOpenSearch }) => {
           <h1 className="text-sm sm:text-base font-bold text-[#0B1F3A]">
             Good morning, {firstName}
           </h1>
-          <span className="hidden sm:inline text-[11px] text-[#00A88F] font-semibold bg-teal-50 px-2 py-0.5 rounded border border-teal-200">
-            Day 7 Streak
-          </span>
         </div>
         <div className="text-[11px] text-[#667085] flex items-center gap-2">
           <span>{currentDate}</span>

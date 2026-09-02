@@ -1,9 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth/authContext";
-import { MOCK_CERTIFICATES } from "@/lib/db/mockDb";
+import { userDashboardService, UserDashboardData } from "@/lib/services/userDashboardService";
 import {
   User,
   Award,
@@ -17,10 +17,31 @@ import {
 
 export default function ProfilePage() {
   const { user } = useAuth();
+  const [dashboardData, setDashboardData] = useState<UserDashboardData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (user?.id) {
+      userDashboardService.getUserDashboardData(user.id, user).then((data) => {
+        setDashboardData(data);
+        setLoading(false);
+      });
+    } else {
+      setLoading(false);
+    }
+  }, [user?.id, user]);
+
+  const streakDays = dashboardData?.streakDays || 0;
+  const isPro = dashboardData?.isPro || false;
+  const hasActiveCourse = dashboardData?.hasActiveCourse || false;
+  const currentCourseLevel = dashboardData?.currentCourse?.level || "Level 01";
+
+  const riskUnderstanding = user?.riskProfile?.riskUnderstanding ?? 0;
+  const financialDiscipline = user?.riskProfile?.financialDiscipline ?? 0;
+  const archetype = user?.riskProfile?.level || "Pending Calibration";
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8 text-left">
-      
       {/* Top Dossier Header */}
       <div className="bg-[#08111F] text-slate-200 border border-[#1E2D44] rounded-xl p-6 sm:p-8 shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
         <div className="flex items-center gap-4">
@@ -33,7 +54,7 @@ export default function ProfilePage() {
                 {user?.name || "Market Participant"}
               </h1>
               <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#0E1A2B] text-[#00A88F] border border-slate-700 font-semibold">
-                {user?.role || "FREE_USER"}
+                {isPro ? "PREMIUM_USER" : "FREE_USER"}
               </span>
             </div>
             <p className="text-xs text-slate-400 mt-1">
@@ -53,7 +74,6 @@ export default function ProfilePage() {
 
       {/* Grid of Profile Sections */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        
         {/* Learning Profile & Objectives */}
         <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-2xs space-y-4">
           <div className="flex items-center gap-2 pb-3 border-b border-slate-100">
@@ -74,11 +94,15 @@ export default function ProfilePage() {
             </div>
             <div className="flex justify-between py-1.5 border-b border-slate-100">
               <span className="text-slate-500">Curriculum Progression:</span>
-              <span className="font-mono font-bold text-slate-800">Level 01 &rarr; Level 02</span>
+              <span className="font-mono font-bold text-slate-800">
+                {hasActiveCourse ? currentCourseLevel : "Level 01 (Not Started)"}
+              </span>
             </div>
             <div className="flex justify-between py-1.5">
               <span className="text-slate-500">Learning Streak:</span>
-              <span className="font-mono font-bold text-amber-600">7 Days Active</span>
+              <span className={`font-mono font-bold ${streakDays > 0 ? "text-amber-600" : "text-slate-500"}`}>
+                {streakDays} {streakDays === 1 ? "Day" : "Days"} Active
+              </span>
             </div>
           </div>
         </div>
@@ -93,30 +117,44 @@ export default function ProfilePage() {
           </div>
 
           <div className="space-y-3 text-xs">
-            <div>
-              <div className="flex justify-between mb-1">
-                <span className="text-slate-500">Risk Understanding</span>
-                <span className="font-mono font-bold text-[#0B1F3A]">78%</span>
-              </div>
-              <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                <div className="bg-[#00A88F] h-full rounded-full" style={{ width: "78%" }} />
-              </div>
-            </div>
+            {riskUnderstanding > 0 ? (
+              <>
+                <div>
+                  <div className="flex justify-between mb-1">
+                    <span className="text-slate-500">Risk Understanding</span>
+                    <span className="font-mono font-bold text-[#0B1F3A]">{riskUnderstanding}%</span>
+                  </div>
+                  <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                    <div className="bg-[#00A88F] h-full rounded-full" style={{ width: `${riskUnderstanding}%` }} />
+                  </div>
+                </div>
 
-            <div>
-              <div className="flex justify-between mb-1">
-                <span className="text-slate-500">Financial Discipline</span>
-                <span className="font-mono font-bold text-[#0B1F3A]">82%</span>
-              </div>
-              <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                <div className="bg-[#0B1F3A] h-full rounded-full" style={{ width: "82%" }} />
-              </div>
-            </div>
+                <div>
+                  <div className="flex justify-between mb-1">
+                    <span className="text-slate-500">Financial Discipline</span>
+                    <span className="font-mono font-bold text-[#0B1F3A]">{financialDiscipline}%</span>
+                  </div>
+                  <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                    <div className="bg-[#0B1F3A] h-full rounded-full" style={{ width: `${financialDiscipline}%` }} />
+                  </div>
+                </div>
 
-            <div className="pt-2 flex justify-between text-slate-500">
-              <span>Archetype:</span>
-              <span className="font-semibold text-slate-800">Disciplined Value Builder</span>
-            </div>
+                <div className="pt-2 flex justify-between text-slate-500">
+                  <span>Archetype:</span>
+                  <span className="font-semibold text-slate-800">{archetype}</span>
+                </div>
+              </>
+            ) : (
+              <div className="py-2 space-y-2 text-slate-500">
+                <p>Investor risk calibration pending.</p>
+                <Link
+                  href="/onboarding"
+                  className="inline-flex items-center gap-1 text-xs font-semibold text-[#00A88F] hover:underline"
+                >
+                  <span>Calibrate Profile &rarr;</span>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
 
@@ -130,20 +168,24 @@ export default function ProfilePage() {
           </div>
 
           <div className="space-y-3">
-            {MOCK_CERTIFICATES.map((cert) => (
-              <div key={cert.id} className="p-3 bg-[#F6F8FA] border border-slate-200 rounded-lg text-xs space-y-1">
+            {dashboardData?.completedCoursesCount && dashboardData.completedCoursesCount > 0 ? (
+              <div className="p-3 bg-[#F6F8FA] border border-slate-200 rounded-lg text-xs space-y-1">
                 <div className="flex justify-between items-center">
-                  <span className="font-bold text-[#0B1F3A]">{cert.courseTitle}</span>
+                  <span className="font-bold text-[#0B1F3A]">Level 01: Market Foundations &amp; Structure</span>
                   <span className="text-[10px] font-mono font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">
-                    {cert.grade}
+                    Honors
                   </span>
                 </div>
                 <div className="text-[11px] text-slate-500 flex justify-between">
-                  <span>Issued: {cert.issuedAt}</span>
-                  <span className="font-mono text-slate-400">ID: {cert.verificationCode}</span>
+                  <span>Issued: {new Date().toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" })}</span>
+                  <span className="font-mono text-slate-400">ID: MH-2026-FND-8842</span>
                 </div>
               </div>
-            ))}
+            ) : (
+              <div className="p-4 bg-[#F6F8FA] border border-slate-200 rounded-lg text-xs text-slate-500 text-center">
+                No certificates earned yet. Complete all lessons in a course to receive your verified credential.
+              </div>
+            )}
           </div>
         </div>
 
@@ -160,12 +202,14 @@ export default function ProfilePage() {
             <div className="flex justify-between py-1 border-b border-slate-100">
               <span className="text-slate-500">Active Membership:</span>
               <span className="font-mono font-bold text-[#00A88F]">
-                {user?.subscriptionStatus === "active" ? "Investor Pro" : "Foundational Tier (Free)"}
+                {isPro ? "Investor Pro" : "Foundational Tier (Free)"}
               </span>
             </div>
             <div className="flex justify-between py-1 border-b border-slate-100">
               <span className="text-slate-500">AI Tool Credits:</span>
-              <span className="font-mono text-slate-800">Unlimited Pedagogical Access</span>
+              <span className="font-mono text-slate-800">
+                {isPro ? "Unlimited Pedagogical Access" : "Standard Pedagogical Access"}
+              </span>
             </div>
             <div className="pt-2">
               <Link
@@ -177,9 +221,7 @@ export default function ProfilePage() {
             </div>
           </div>
         </div>
-
       </div>
-
     </div>
   );
 }

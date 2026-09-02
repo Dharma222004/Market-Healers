@@ -3,10 +3,9 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth/authContext";
-import { courseService } from "@/lib/services/courseService";
+import { userDashboardService, UserDashboardData } from "@/lib/services/userDashboardService";
 import { marketDataService } from "@/lib/market/marketService";
 import { MarketIndexQuote } from "@/types";
-import { DBCourse, DBEnrollment } from "@/types/database";
 import {
   Play,
   ArrowRight,
@@ -14,26 +13,43 @@ import {
   Sparkles,
   Flame,
   BookOpen,
-  TrendingUp,
-  TrendingDown,
+  RotateCcw,
 } from "lucide-react";
 
 export default function DashboardPage() {
-  const { user } = useAuth();
-  const [activeData, setActiveData] = useState<{
-    enrollment: DBEnrollment;
-    course: DBCourse;
-  } | null>(null);
+  const { user, isLoading: isAuthLoading } = useAuth();
+  const [dashboardData, setDashboardData] = useState<UserDashboardData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   const [quotes, setQuotes] = useState<MarketIndexQuote[]>([]);
   const [isMarketOpen, setIsMarketOpen] = useState(false);
 
-  useEffect(() => {
-    // 1. Fetch active course enrollment
-    courseService.getActiveEnrollment("demo_user").then((res) => {
-      if (res) setActiveData(res);
-    });
+  // 1. Fetch Dynamic User Dashboard Data
+  const loadDashboardData = async () => {
+    if (!user && isAuthLoading) return;
+    setIsLoading(true);
+    setError(null);
+    try {
+      const activeUserId = user?.id || "anonymous_learner";
+      const data = await userDashboardService.getUserDashboardData(activeUserId, user || undefined);
+      setDashboardData(data);
+    } catch (err: any) {
+      console.error("Dashboard dynamic load error:", err);
+      setError("Unable to load your personalized learning progress.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    // 2. Fetch live quotes for NIFTY 50, SENSEX, BANK NIFTY
+  useEffect(() => {
+    if (!isAuthLoading) {
+      loadDashboardData();
+    }
+  }, [user?.id, isAuthLoading]);
+
+  // 2. Fetch Live Market Quotes
+  useEffect(() => {
     marketDataService.getIndexQuotes().then((q) => {
       setQuotes(q.slice(0, 3));
     });
@@ -42,7 +58,6 @@ export default function DashboardPage() {
       setQuotes(q.slice(0, 3));
     });
 
-    // 3. Compute Indian Market Open/Closed Status (09:15 to 15:30 IST, Mon-Fri)
     const checkMarketHours = () => {
       const now = new Date();
       const utc = now.getTime() + now.getTimezoneOffset() * 60000;
@@ -63,28 +78,48 @@ export default function DashboardPage() {
     };
   }, []);
 
-  // User details
-  const userName = user?.name ? user.name.split(" ")[0] : "Dharmadurai";
-  const streakDays = (user as any)?.streakDays || 7;
+  // --------------------------------------------------------------------------
+  // SKELETON LOADER (Never flash fake static values while waiting for Supabase)
+  // --------------------------------------------------------------------------
+  if (isLoading || isAuthLoading) {
+    return (
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6 animate-pulse">
+        <div className="h-16 bg-slate-200/80 rounded-xl w-full" />
+        <div className="h-44 bg-slate-200/80 rounded-xl w-full" />
+        <div className="h-28 bg-slate-200/80 rounded-xl w-full" />
+        <div className="h-32 bg-slate-200/80 rounded-xl w-full" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="h-36 bg-slate-200/80 rounded-xl" />
+          <div className="h-36 bg-slate-200/80 rounded-xl" />
+        </div>
+        <div className="h-32 bg-slate-200/80 rounded-xl w-full" />
+      </div>
+    );
+  }
 
-  // Profile completion status
-  // Profile is incomplete if user hasn't calibrated risk profile or experience level
-  const isProfileIncomplete = !user?.riskProfile || !user?.experienceLevel || user.experienceLevel === "Beginner";
-  const profileCompletionPercent = user?.riskProfile ? 100 : user?.experienceLevel ? 60 : 40;
+  // --------------------------------------------------------------------------
+  // ERROR STATE
+  // --------------------------------------------------------------------------
+  if (error || !dashboardData) {
+    return (
+      <div className="max-w-xl mx-auto my-16 p-8 bg-white border border-rose-200 rounded-2xl text-center space-y-4 shadow-sm">
+        <div className="w-12 h-12 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center mx-auto">
+          <RotateCcw className="w-6 h-6" />
+        </div>
+        <h2 className="text-lg font-bold text-slate-900">Dashboard Unavailable</h2>
+        <p className="text-xs text-slate-500">{error || "Could not retrieve your learning progress."}</p>
+        <button
+          onClick={loadDashboardData}
+          className="inline-flex items-center gap-2 px-4 py-2 bg-[#0B1F3A] hover:bg-[#132742] text-white text-xs font-semibold rounded-lg transition-colors"
+        >
+          <RotateCcw className="w-3.5 h-3.5" />
+          <span>Retry</span>
+        </button>
+      </div>
+    );
+  }
 
-  // Continue Learning data
-  const course = activeData?.course;
-  const enrollment = activeData?.enrollment;
-  const courseName = course?.title || "Technical Analysis Foundations";
-  const courseLevel = course?.level || "Level 02";
-  const nextLessonTitle = "Understanding Support & Resistance";
-  const lessonDuration = "12 min";
-  const lessonCounter = "Lesson 8 of 13";
-  const courseProgress = enrollment?.progressPercent || 62;
-  const courseId = course?.id || "course-2";
-  const lessonId = enrollment?.currentLessonId || "les-2-1-1";
-
-  // Fallback quotes if not yet loaded from service
+  // Fallback quotes if market feed is connecting
   const snapshotQuotes =
     quotes.length >= 3
       ? quotes
@@ -97,26 +132,17 @@ export default function DashboardPage() {
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6 text-left">
       {/* 1. HEADER */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-[#0B1F3A] tracking-tight">
-            Good morning, {userName}
-          </h1>
-          <p className="text-sm text-slate-500 mt-1">
-            Continue your learning journey.
-          </p>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-teal-50 border border-teal-200 text-xs font-mono font-semibold text-[#00A88F]">
-            <Flame className="w-4 h-4 fill-[#00A88F]" />
-            <span>Day {streakDays} Streak</span>
-          </div>
-        </div>
+      <div className="pb-4 border-b border-slate-200">
+        <h1 className="text-2xl sm:text-3xl font-bold text-[#0B1F3A] tracking-tight">
+          Good morning, {dashboardData.userName}
+        </h1>
+        <p className="text-sm text-slate-500 mt-1">
+          Continue your learning journey.
+        </p>
       </div>
 
-      {/* 2. PROFILE COMPLETION (Conditional) */}
-      {isProfileIncomplete && (
+      {/* 2. PROFILE COMPLETION (Only shown if user's profile is incomplete) */}
+      {!dashboardData.isProfileComplete && (
         <div className="bg-[#08111F] border border-[#1E2D44] rounded-xl p-5 sm:p-6 text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 shadow-2xs">
           <div className="space-y-1.5 max-w-xl">
             <div className="flex items-center gap-2">
@@ -124,7 +150,7 @@ export default function DashboardPage() {
                 Complete Your Profile
               </h2>
               <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-teal-900/60 border border-teal-600/40 text-teal-300 font-semibold">
-                {profileCompletionPercent}% Complete
+                {dashboardData.profileCompletionPercent}% Complete
               </span>
             </div>
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
@@ -133,7 +159,7 @@ export default function DashboardPage() {
             <div className="w-full bg-slate-800 h-1.5 rounded-full mt-2 max-w-xs overflow-hidden">
               <div
                 className="bg-[#00A88F] h-full rounded-full transition-all duration-300"
-                style={{ width: `${profileCompletionPercent}%` }}
+                style={{ width: `${dashboardData.profileCompletionPercent}%` }}
               />
             </div>
           </div>
@@ -148,69 +174,102 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* 3. CONTINUE LEARNING (Main Section) */}
+      {/* 3. CONTINUE LEARNING (Main Section - 100% Dynamic) */}
       <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-2xs space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <h2 className="text-xs font-bold text-[#0B1F3A] uppercase tracking-wider font-mono">
               Continue Learning
             </h2>
-            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-teal-50 text-[#00A88F] border border-teal-200 font-bold">
-              {courseLevel}
+            {dashboardData.hasActiveCourse && dashboardData.currentCourse && (
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-teal-50 text-[#00A88F] border border-teal-200 font-bold">
+                {dashboardData.currentCourse.level}
+              </span>
+            )}
+          </div>
+          {dashboardData.hasActiveCourse && dashboardData.currentCourse && (
+            <span className="text-xs font-mono text-slate-500 font-medium">
+              {dashboardData.currentCourse.title}
             </span>
-          </div>
-          <span className="text-xs font-mono text-slate-500 font-medium">
-            {courseName}
-          </span>
+          )}
         </div>
 
-        <div>
-          <div className="text-[11px] font-mono uppercase tracking-wider text-slate-400 font-semibold">
-            Next Lesson:
-          </div>
-          <h3 className="text-xl font-bold text-[#0B1F3A] mt-0.5">
-            {nextLessonTitle}
-          </h3>
-          <div className="text-xs font-mono text-slate-500 mt-1 flex items-center gap-2">
-            <Clock className="w-3.5 h-3.5 text-slate-400" />
-            <span>{lessonDuration}</span>
-            <span>&bull;</span>
-            <span>{lessonCounter}</span>
-          </div>
-        </div>
+        {dashboardData.hasActiveCourse && dashboardData.currentCourse && dashboardData.nextLesson ? (
+          <>
+            <div>
+              <div className="text-[11px] font-mono uppercase tracking-wider text-slate-400 font-semibold">
+                Next Lesson:
+              </div>
+              <h3 className="text-xl font-bold text-[#0B1F3A] mt-0.5">
+                {dashboardData.nextLesson.title}
+              </h3>
+              <div className="text-xs font-mono text-slate-500 mt-1 flex items-center gap-2">
+                <Clock className="w-3.5 h-3.5 text-slate-400" />
+                <span>{dashboardData.nextLesson.durationMinutes} min</span>
+                <span>&bull;</span>
+                <span>
+                  Lesson {dashboardData.nextLesson.lessonNumber} of {dashboardData.nextLesson.totalLessons}
+                </span>
+              </div>
+            </div>
 
-        {/* Course Progress */}
-        <div className="space-y-1.5 pt-1">
-          <div className="flex justify-between text-xs font-mono">
-            <span className="text-slate-500">Course Progress</span>
-            <span className="font-bold text-[#0B1F3A]">{courseProgress}%</span>
-          </div>
-          <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-            <div
-              className="bg-[#00A88F] h-full rounded-full transition-all duration-500"
-              style={{ width: `${courseProgress}%` }}
-            />
-          </div>
-        </div>
+            {/* Course Progress */}
+            <div className="space-y-1.5 pt-1">
+              <div className="flex justify-between text-xs font-mono">
+                <span className="text-slate-500">Course Progress</span>
+                <span className="font-bold text-[#0B1F3A]">
+                  {dashboardData.currentCourse.progressPercent}%
+                </span>
+              </div>
+              <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                <div
+                  className="bg-[#00A88F] h-full rounded-full transition-all duration-500"
+                  style={{ width: `${dashboardData.currentCourse.progressPercent}%` }}
+                />
+              </div>
+            </div>
 
-        <div className="pt-3 border-t border-slate-100 flex flex-wrap items-center gap-3">
-          <Link
-            href={`/learn/courses/${courseId}/lesson/${lessonId}`}
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0B1F3A] hover:bg-[#132742] text-white text-xs font-semibold rounded-lg shadow-xs transition-colors"
-          >
-            <Play className="w-3.5 h-3.5 fill-current text-[#00A88F]" />
-            <span>Continue Learning</span>
-          </Link>
-          <Link
-            href={`/learn/courses/${courseId}`}
-            className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition-colors"
-          >
-            View Syllabus
-          </Link>
-        </div>
+            <div className="pt-3 border-t border-slate-100 flex flex-wrap items-center gap-3">
+              <Link
+                href={`/learn/courses/${dashboardData.currentCourse.id}/lesson/${dashboardData.nextLesson.id}`}
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0B1F3A] hover:bg-[#132742] text-white text-xs font-semibold rounded-lg shadow-xs transition-colors"
+              >
+                <Play className="w-3.5 h-3.5 fill-current text-[#00A88F]" />
+                <span>Continue Learning</span>
+              </Link>
+              <Link
+                href={`/learn/courses/${dashboardData.currentCourse.id}`}
+                className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition-colors"
+              >
+                View Syllabus
+              </Link>
+            </div>
+          </>
+        ) : (
+          /* Empty / New User State */
+          <div className="py-3 space-y-3">
+            <div>
+              <h3 className="text-lg font-bold text-[#0B1F3A]">
+                Start your first course
+              </h3>
+              <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                You have not started a learning path yet. Begin with Market Foundations to learn order books and price discovery mechanics.
+              </p>
+            </div>
+            <div className="pt-2 border-t border-slate-100">
+              <Link
+                href="/learn/courses"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0B1F3A] hover:bg-[#132742] text-white text-xs font-semibold rounded-lg shadow-xs transition-colors"
+              >
+                <BookOpen className="w-3.5 h-3.5 text-[#00A88F]" />
+                <span>Explore Courses &rarr;</span>
+              </Link>
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* 4. TODAY'S FOCUS */}
+      {/* 4. TODAY'S FOCUS (Personalized) */}
       <div className="bg-white border border-slate-200 rounded-xl p-5 sm:p-6 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-1 max-w-2xl">
           <div className="flex items-center gap-2">
@@ -220,21 +279,21 @@ export default function DashboardPage() {
             </h2>
           </div>
           <h3 className="text-base sm:text-lg font-bold text-[#0B1F3A]">
-            {nextLessonTitle}
+            {dashboardData.todaysFocus.title}
           </h3>
           <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-            Learn how to identify key support and resistance levels and understand their role in market analysis.
+            {dashboardData.todaysFocus.description}
           </p>
           <div className="text-xs font-mono text-slate-400 pt-1">
-            {lessonDuration} &bull; Technical Analysis
+            {dashboardData.todaysFocus.duration} &bull; {dashboardData.todaysFocus.category}
           </div>
         </div>
 
         <Link
-          href={`/learn/courses/${courseId}/lesson/${lessonId}`}
+          href={dashboardData.todaysFocus.actionUrl}
           className="inline-flex items-center gap-2 px-4 py-2.5 bg-teal-50 hover:bg-teal-100/80 text-[#00A88F] border border-teal-200 text-xs font-semibold rounded-lg transition-colors shrink-0 self-start sm:self-auto"
         >
-          <span>Start Lesson</span>
+          <span>{dashboardData.todaysFocus.actionText}</span>
           <ArrowRight className="w-3.5 h-3.5" />
         </Link>
       </div>
@@ -292,7 +351,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* 6 & 7. YOUR PROGRESS & YOUR STREAK (Two-Column Balanced Grid) */}
+      {/* 6 & 7. YOUR PROGRESS & YOUR STREAK (Dynamic) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* 6. YOUR PROGRESS */}
         <div className="bg-white border border-slate-200 rounded-xl p-5 sm:p-6 shadow-2xs space-y-4 flex flex-col justify-between">
@@ -302,21 +361,26 @@ export default function DashboardPage() {
                 Your Progress
               </h2>
               <span className="text-xs font-mono text-slate-500 font-medium">
-                Level 02 &bull; Intermediate
+                {dashboardData.currentLevelDisplay}
               </span>
             </div>
 
             <div className="mt-3">
               <div className="text-xs font-semibold text-slate-600">Learning Journey</div>
               <div className="flex items-baseline gap-2 mt-1">
-                <span className="text-3xl font-bold font-mono text-[#0B1F3A]">62%</span>
+                <span className="text-3xl font-bold font-mono text-[#0B1F3A]">
+                  {dashboardData.overallProgressPercent}%
+                </span>
                 <span className="text-xs font-mono text-slate-500">Complete</span>
               </div>
               <div className="w-full bg-slate-100 h-2 rounded-full mt-2 overflow-hidden">
-                <div className="bg-[#00A88F] h-full rounded-full" style={{ width: "62%" }} />
+                <div
+                  className="bg-[#00A88F] h-full rounded-full transition-all duration-500"
+                  style={{ width: `${dashboardData.overallProgressPercent}%` }}
+                />
               </div>
               <p className="text-xs font-mono text-slate-500 mt-2">
-                3 of 8 Courses Completed
+                {dashboardData.completedCoursesCount} of {dashboardData.totalCoursesCount} Courses Completed
               </p>
             </div>
           </div>
@@ -344,7 +408,7 @@ export default function DashboardPage() {
               </div>
               <div>
                 <div className="text-3xl font-bold font-mono text-[#0B1F3A]">
-                  {streakDays}
+                  {dashboardData.streakDays}
                 </div>
                 <div className="text-xs font-mono text-slate-600 font-semibold">
                   Day Streak
@@ -354,12 +418,12 @@ export default function DashboardPage() {
           </div>
 
           <div className="pt-3 border-t border-slate-100 text-xs font-mono text-slate-500">
-            4 lessons completed this week
+            {dashboardData.lessonsThisWeek} lessons completed this week
           </div>
         </div>
       </div>
 
-      {/* 8. RECOMMENDED FOR YOU */}
+      {/* 8. RECOMMENDED FOR YOU (Personalized from uncompleted courses) */}
       <div className="bg-white border border-slate-200 rounded-xl p-5 sm:p-6 shadow-2xs space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-xs font-bold text-[#0B1F3A] uppercase tracking-wider font-mono">
@@ -375,77 +439,33 @@ export default function DashboardPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {/* Recommendation 1 */}
-          <div className="p-4 rounded-lg bg-[#F6F8FA] border border-slate-200 flex flex-col justify-between hover:border-slate-300 transition-colors">
-            <div>
-              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-200/80 text-slate-700 font-semibold">
-                Derivatives
-              </span>
-              <h3 className="text-sm font-bold text-[#0B1F3A] mt-2">
-                Options Basics
-              </h3>
-              <p className="text-xs font-mono text-slate-500 mt-1">
-                Beginner &bull; 18 min
-              </p>
+          {dashboardData.recommendations.map((rec) => (
+            <div
+              key={rec.id}
+              className="p-4 rounded-lg bg-[#F6F8FA] border border-slate-200 flex flex-col justify-between hover:border-slate-300 transition-colors"
+            >
+              <div>
+                <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-200/80 text-slate-700 font-semibold">
+                  {rec.category}
+                </span>
+                <h3 className="text-sm font-bold text-[#0B1F3A] mt-2">
+                  {rec.title}
+                </h3>
+                <p className="text-xs font-mono text-slate-500 mt-1">
+                  {rec.level} &bull; {rec.duration}
+                </p>
+              </div>
+              <div className="pt-3 mt-3 border-t border-slate-200/60">
+                <Link
+                  href={rec.url}
+                  className="inline-flex items-center gap-1 text-xs font-semibold text-[#00A88F] hover:underline"
+                >
+                  <span>Start</span>
+                  <ArrowRight className="w-3 h-3" />
+                </Link>
+              </div>
             </div>
-            <div className="pt-3 mt-3 border-t border-slate-200/60">
-              <Link
-                href="/learn/courses"
-                className="inline-flex items-center gap-1 text-xs font-semibold text-[#00A88F] hover:underline"
-              >
-                <span>Start</span>
-                <ArrowRight className="w-3 h-3" />
-              </Link>
-            </div>
-          </div>
-
-          {/* Recommendation 2 */}
-          <div className="p-4 rounded-lg bg-[#F6F8FA] border border-slate-200 flex flex-col justify-between hover:border-slate-300 transition-colors">
-            <div>
-              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-200/80 text-slate-700 font-semibold">
-                Price Action
-              </span>
-              <h3 className="text-sm font-bold text-[#0B1F3A] mt-2">
-                Reading Market Trends
-              </h3>
-              <p className="text-xs font-mono text-slate-500 mt-1">
-                Intermediate &bull; 14 min
-              </p>
-            </div>
-            <div className="pt-3 mt-3 border-t border-slate-200/60">
-              <Link
-                href="/learn/courses"
-                className="inline-flex items-center gap-1 text-xs font-semibold text-[#00A88F] hover:underline"
-              >
-                <span>Start</span>
-                <ArrowRight className="w-3 h-3" />
-              </Link>
-            </div>
-          </div>
-
-          {/* Recommendation 3 */}
-          <div className="p-4 rounded-lg bg-[#F6F8FA] border border-slate-200 flex flex-col justify-between hover:border-slate-300 transition-colors">
-            <div>
-              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-200/80 text-slate-700 font-semibold">
-                Capital Preservation
-              </span>
-              <h3 className="text-sm font-bold text-[#0B1F3A] mt-2">
-                Risk Management Essentials
-              </h3>
-              <p className="text-xs font-mono text-slate-500 mt-1">
-                Beginner &bull; 15 min
-              </p>
-            </div>
-            <div className="pt-3 mt-3 border-t border-slate-200/60">
-              <Link
-                href="/learn/courses"
-                className="inline-flex items-center gap-1 text-xs font-semibold text-[#00A88F] hover:underline"
-              >
-                <span>Start</span>
-                <ArrowRight className="w-3 h-3" />
-              </Link>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </div>

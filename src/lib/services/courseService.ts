@@ -40,44 +40,43 @@ class CourseService implements ICourseService {
     return null;
   }
 
-  async getUserEnrollments(_userId: string): Promise<DBEnrollment[]> {
-    return [...this.enrollments];
+  async getUserEnrollments(userId: string): Promise<DBEnrollment[]> {
+    return this.enrollments.filter((e) => e.userId === userId);
   }
 
   async getActiveEnrollment(userId: string): Promise<{ enrollment: DBEnrollment; course: DBCourse } | null> {
-    const active = this.enrollments.find((e) => !e.isCompleted) || this.enrollments[0];
+    const userEnrollments = this.enrollments.filter((e) => e.userId === userId);
+    const active = userEnrollments.find((e) => !e.isCompleted) || userEnrollments[0];
     if (!active) return null;
     const course = await this.getCourseById(active.courseId);
     if (!course) return null;
     return { enrollment: active, course };
   }
 
-  async markLessonComplete(_userId: string, courseId: string, lessonId: string): Promise<DBEnrollment> {
-    let enrollment = this.enrollments.find((e) => e.courseId === courseId);
+  async markLessonComplete(userId: string, courseId: string, lessonId: string): Promise<DBEnrollment> {
+    let enrollment = this.enrollments.find((e) => e.userId === userId && e.courseId === courseId);
     if (!enrollment) {
       enrollment = {
         id: "enr_" + Math.random().toString(36).substring(2, 7),
-        userId: "demo_user",
+        userId,
         courseId,
-        progressPercent: 10,
+        progressPercent: 0,
         currentLessonId: lessonId,
         completedLessonIds: [lessonId],
         isCompleted: false,
         enrolledAt: new Date().toISOString(),
       };
       this.enrollments.push(enrollment);
-      return enrollment;
+    } else if (!enrollment.completedLessonIds.includes(lessonId)) {
+      enrollment.completedLessonIds.push(lessonId);
     }
 
-    if (!enrollment.completedLessonIds.includes(lessonId)) {
-      enrollment.completedLessonIds.push(lessonId);
-      const course = await this.getCourseById(courseId);
-      const totalLessons = course?.lessonsCount || 10;
-      enrollment.progressPercent = Math.min(100, Math.round((enrollment.completedLessonIds.length / totalLessons) * 100));
-      if (enrollment.progressPercent >= 100) {
-        enrollment.isCompleted = true;
-        enrollment.completedAt = new Date().toISOString();
-      }
+    const course = await this.getCourseById(courseId);
+    const totalLessons = course?.lessonsCount || 10;
+    enrollment.progressPercent = Math.min(100, Math.round((enrollment.completedLessonIds.length / totalLessons) * 100));
+    if (enrollment.progressPercent >= 100) {
+      enrollment.isCompleted = true;
+      enrollment.completedAt = new Date().toISOString();
     }
     return enrollment;
   }

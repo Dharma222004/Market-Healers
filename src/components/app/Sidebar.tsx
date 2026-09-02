@@ -218,7 +218,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
             <div className="flex-1 flex items-center justify-between text-[11px]">
               <span className="text-slate-300">Current Plan</span>
               <span className="font-mono text-[#00A88F] font-semibold">
-                {user?.subscriptionStatus === "active" ? "PRO" : "FREE"}
+                {(user as any)?.subscriptionPlan === "pro" || (user as any)?.isPro === true || user?.role === "PREMIUM_USER"
+                  ? "PRO"
+                  : "FREE"}
               </span>
             </div>
           )}

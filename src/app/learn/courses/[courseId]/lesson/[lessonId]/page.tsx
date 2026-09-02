@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { DBCourse, DBLesson } from "@/types/database";
 import { courseService } from "@/lib/services/courseService";
+import { userDashboardService } from "@/lib/services/userDashboardService";
+import { useAuth } from "@/lib/auth/authContext";
 import { ruzhaaServiceExtended, IChatMessage } from "@/lib/services/aiServicesExtended";
 import {
   Play,
@@ -20,6 +22,7 @@ import {
 } from "lucide-react";
 
 export default function LessonPlayerPage() {
+  const { user } = useAuth();
   const params = useParams();
   const courseId = (params?.courseId as string) || "course-2";
   const lessonId = (params?.lessonId as string) || "les-2-1-1";
@@ -60,7 +63,9 @@ export default function LessonPlayerPage() {
   const { lesson, course } = lessonData;
 
   const handleToggleComplete = async () => {
-    await courseService.markLessonComplete("demo_user", course.id, lesson.id);
+    const activeUserId = user?.id || "demo_user";
+    await courseService.markLessonComplete(activeUserId, course.id, lesson.id);
+    await userDashboardService.recordLessonCompletion(activeUserId, course.id, lesson.id);
     setIsCompleted(true);
   };
 

@@ -171,9 +171,6 @@ export default function MarketOverviewPage() {
           <h1 className="text-2xl sm:text-3xl font-bold text-[#0B1F3A] tracking-tight mt-1">
             Indian Exchange Overview
           </h1>
-          <p className="text-xs text-slate-500 mt-1">
-            Real-time price discovery across NSE &amp; BSE benchmark indices, Nifty 50 movers, and bullion
-          </p>
         </div>
 
         <Link
@@ -192,8 +189,6 @@ export default function MarketOverviewPage() {
             <span className="text-xs font-bold text-[#0B1F3A] uppercase tracking-wider font-mono">
               Top 5 Benchmark Indices
             </span>
-            <span className="text-[10px] font-mono text-slate-400">&bull;</span>
-            <span className="text-[11px] text-slate-500">Live NSE &amp; BSE Quotes</span>
           </div>
           <span className="text-[10px] font-mono text-[#00A88F] bg-teal-50 px-2 py-0.5 rounded border border-teal-200/60 hidden sm:inline-block">
             Auto-Refreshed
@@ -246,10 +241,6 @@ export default function MarketOverviewPage() {
             <div className="flex items-center gap-2">
               <span className="text-[10px] font-mono uppercase tracking-wider text-[#C9A227] font-semibold">
                 COMMODITIES &amp; BULLION
-              </span>
-              <span className="text-[10px] font-mono text-slate-400">&bull;</span>
-              <span className="text-[11px] font-medium text-slate-500">
-                Indian Domestic Retail Spot (GoodReturns / IBJA Benchmark)
               </span>
             </div>
             <h2 className="text-base font-bold text-[#0B1F3A] mt-0.5">
@@ -427,15 +418,10 @@ export default function MarketOverviewPage() {
               <span className="text-[10px] font-mono uppercase tracking-wider text-[#00A88F] font-semibold">
                 MARKET SURVEILLANCE &bull; NIFTY 50
               </span>
-              <span className="text-[10px] font-mono text-slate-400">&bull;</span>
-              <span className="text-[11px] font-medium text-slate-500">Intraday Performance</span>
             </div>
             <h2 className="text-lg font-bold text-[#0B1F3A] mt-0.5">
               Market Performance: Top Gainers &amp; Losers
             </h2>
-            <p className="text-xs text-slate-500 mt-0.5">
-              Real-time session leaders and laggards ranked by percentage change
-            </p>
           </div>
 
           <div className="flex items-center gap-2 text-xs font-mono">

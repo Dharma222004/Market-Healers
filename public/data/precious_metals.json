@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-02T15:36:04.911Z",
+  "updated_at": "2026-09-02T15:51:32.008Z",
   "gold_24k": {
     "name": "24K Gold",
     "karat": "24K",
@@ -39,12 +39,12 @@
   "silver": {
     "name": "Silver",
     "purity": ".999 Fine Silver",
-    "price_per_gram": 249,
-    "price_per_10g": 2490,
-    "price_per_100g": 24900,
-    "price_per_kg": 249000,
-    "change": 0.82,
-    "change_percent": 0.33,
+    "price_per_gram": 250,
+    "price_per_10g": 2500,
+    "price_per_100g": 25000,
+    "price_per_kg": 250000,
+    "change": 1.2,
+    "change_percent": 0.48,
     "currency": "INR",
     "standard": "Fine Silver Coin & 1 Kg Bar"
   },

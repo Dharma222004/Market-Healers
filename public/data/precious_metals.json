@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-01T15:35:16.935411+00:00",
+  "updated_at": "2026-09-02T14:59:31.647Z",
   "gold": {
     "name": "Gold",
     "symbol": "GC=F",
@@ -8,20 +8,20 @@
     "contract": "COMEX Gold Futures",
     "currency": "INR",
     "unit": "gram",
-    "price": 13454.03,
-    "price_inr_per_gram": 13454.03,
-    "price_inr_per_10g": 134540.29,
-    "price_usd_per_gram": 141.7109,
-    "price_usd_per_troy_ounce": 4407.7,
-    "previous_close_usd_per_troy_ounce": 4431.1,
-    "change_usd_per_troy_ounce": -23.4,
-    "change_percent": -0.5281,
-    "usd_inr": 94.94,
-    "timestamp": "2026-09-01T11:15:00-04:00",
+    "price": 13516.7,
+    "price_inr_per_gram": 13516.7,
+    "price_inr_per_10g": 135167.01,
+    "price_usd_per_gram": 142.341,
+    "price_usd_per_troy_ounce": 4427.3,
+    "previous_close_usd_per_troy_ounce": 4396.4,
+    "change_usd_per_troy_ounce": 30.9,
+    "change_percent": 0.7,
+    "usd_inr": 94.96,
+    "timestamp": "2026-09-02T14:49:28.000Z",
     "interval": "15m",
     "conversion": {
       "troy_ounce_to_grams": 31.1034768,
-      "formula": "USD/oz \u00f7 31.1034768 \u00d7 USD/INR"
+      "formula": "USD/oz ÷ 31.1034768 × USD/INR"
     }
   },
   "silver": {
@@ -32,20 +32,20 @@
     "contract": "COMEX Silver Futures",
     "currency": "INR",
     "unit": "gram",
-    "price": 199.84,
-    "price_inr_per_gram": 199.84,
-    "price_inr_per_10g": 1998.4,
-    "price_usd_per_gram": 2.1049,
-    "price_usd_per_troy_ounce": 65.47,
-    "previous_close_usd_per_troy_ounce": 66.22,
-    "change_usd_per_troy_ounce": -0.75,
-    "change_percent": -1.1341,
-    "usd_inr": 94.94,
-    "timestamp": "2026-09-01T11:15:00-04:00",
+    "price": 200.83,
+    "price_inr_per_gram": 200.83,
+    "price_inr_per_10g": 2008.29,
+    "price_usd_per_gram": 2.1149,
+    "price_usd_per_troy_ounce": 65.78,
+    "previous_close_usd_per_troy_ounce": 65.37,
+    "change_usd_per_troy_ounce": 0.41,
+    "change_percent": 0.63,
+    "usd_inr": 94.96,
+    "timestamp": "2026-09-02T14:49:28.000Z",
     "interval": "15m",
     "conversion": {
       "troy_ounce_to_grams": 31.1034768,
-      "formula": "USD/oz \u00f7 31.1034768 \u00d7 USD/INR"
+      "formula": "USD/oz ÷ 31.1034768 × USD/INR"
     }
   }
 }

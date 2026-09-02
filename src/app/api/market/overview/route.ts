@@ -1,13 +1,9 @@
 import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
-import { exec } from "child_process";
-import { promisify } from "util";
+import { fetchLiveMarketOverview } from "@/lib/market/yahooFinanceNative";
 
-const execAsync = promisify(exec);
 const DATA_FILE = path.join(process.cwd(), "public", "data", "market_overview.json");
-
-let inFlightOverviewPromise: Promise<any> | null = null;
 
 interface MarketScheduleStatus {
   shouldRefresh: boolean;
@@ -145,6 +141,9 @@ function evaluateIndianMarketSchedule(cachedUpdatedAt?: string): MarketScheduleS
   };
 }
 
+let cachedOverviewData: any = null;
+let inFlightOverviewPromise: Promise<any> | null = null;
+
 async function refreshMarketData(): Promise<any> {
   if (inFlightOverviewPromise) {
     return inFlightOverviewPromise;
@@ -152,14 +151,19 @@ async function refreshMarketData(): Promise<any> {
 
   inFlightOverviewPromise = (async () => {
     try {
-      const scriptPath = path.join(process.cwd(), "scripts", "market_data_service.py");
-      await execAsync(`python "${scriptPath}" --export "${DATA_FILE}"`, { timeout: 30000 });
-      if (fs.existsSync(DATA_FILE)) {
-        const fileContent = fs.readFileSync(DATA_FILE, "utf-8");
-        return JSON.parse(fileContent);
+      const liveData = await fetchLiveMarketOverview();
+      if (liveData && liveData.indices.length > 0) {
+        cachedOverviewData = liveData;
+        try {
+          // Attempt local file write if filesystem is writable (fails gracefully on Vercel)
+          fs.writeFileSync(DATA_FILE, JSON.stringify(liveData, null, 2), "utf-8");
+        } catch {
+          // Ignored on read-only serverless runtimes
+        }
+        return liveData;
       }
     } catch (err) {
-      console.warn("Python market script execution warning:", err);
+      console.warn("Live market fetch warning:", err);
     } finally {
       inFlightOverviewPromise = null;
     }
@@ -174,13 +178,14 @@ export async function GET(request: Request) {
   const forceRefresh = searchParams.get("refresh") === "true";
 
   try {
-    let marketData: any = null;
+    let marketData: any = cachedOverviewData;
 
-    // 1. Read existing cached file if available
-    if (fs.existsSync(DATA_FILE)) {
+    // 1. Read existing cached file if memory cache is empty
+    if (!marketData && fs.existsSync(DATA_FILE)) {
       try {
         const fileContent = fs.readFileSync(DATA_FILE, "utf-8");
         marketData = JSON.parse(fileContent);
+        cachedOverviewData = marketData;
       } catch (err) {
         console.warn("Failed to parse cached market data:", err);
       }

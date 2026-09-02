@@ -1,12 +1,11 @@
 import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
-import { exec } from "child_process";
-import { promisify } from "util";
+import { fetchLivePreciousMetals } from "@/lib/market/yahooFinanceNative";
 
-const execAsync = promisify(exec);
 const DATA_FILE = path.join(process.cwd(), "public", "data", "precious_metals.json");
 
+let cachedMetalsData: any = null;
 let inFlightMetalsPromise: Promise<any> | null = null;
 
 async function refreshMetalsData(): Promise<any> {
@@ -16,14 +15,18 @@ async function refreshMetalsData(): Promise<any> {
 
   inFlightMetalsPromise = (async () => {
     try {
-      const scriptPath = path.join(process.cwd(), "scripts", "precious_metals_service.py");
-      await execAsync(`python "${scriptPath}" --export "${DATA_FILE}"`, { timeout: 25000 });
-      if (fs.existsSync(DATA_FILE)) {
-        const fileContent = fs.readFileSync(DATA_FILE, "utf-8");
-        return JSON.parse(fileContent);
+      const liveData = await fetchLivePreciousMetals();
+      if (liveData && liveData.gold && liveData.silver) {
+        cachedMetalsData = liveData;
+        try {
+          fs.writeFileSync(DATA_FILE, JSON.stringify(liveData, null, 2), "utf-8");
+        } catch {
+          // Ignored on read-only serverless runtimes
+        }
+        return liveData;
       }
     } catch (scriptErr) {
-      console.warn("Python metals script warning:", scriptErr);
+      console.warn("Live metals fetch warning:", scriptErr);
     } finally {
       inFlightMetalsPromise = null;
     }
@@ -38,13 +41,14 @@ export async function GET(request: Request) {
   const forceRefresh = searchParams.get("refresh") === "true";
 
   try {
-    let metalsData: any = null;
+    let metalsData: any = cachedMetalsData;
 
-    // 1. Check if cached file exists
-    if (fs.existsSync(DATA_FILE)) {
+    // 1. Check if cached file exists if memory is empty
+    if (!metalsData && fs.existsSync(DATA_FILE)) {
       try {
         const fileContent = fs.readFileSync(DATA_FILE, "utf-8");
         metalsData = JSON.parse(fileContent);
+        cachedMetalsData = metalsData;
       } catch (err) {
         console.warn("Failed to parse cached precious metals data:", err);
       }
@@ -114,7 +118,8 @@ export async function GET(request: Request) {
       },
     });
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error(">>> ERROR in metals GET:", error);
+    return NextResponse.json({ error: error?.message || "Unknown error" }, { status: 500 });
   }
 }
 

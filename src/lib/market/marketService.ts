@@ -42,41 +42,51 @@ class YahooMarketDataService implements IMarketDataService {
     {
       symbol: "NIFTY 50",
       name: "NIFTY 50",
-      price: 24055.80,
-      change: -24.60,
-      changePercent: -0.10,
+      price: 23914.45,
+      change: -141.35,
+      changePercent: -0.59,
       high52w: 26277.35,
       low52w: 21280.0,
       lastUpdated: "15m interval &bull; Yahoo Finance",
     },
     {
-      symbol: "BANK NIFTY",
-      name: "NIFTY BANK",
-      price: 57409.60,
-      change: -615.35,
-      changePercent: -1.06,
-      high52w: 58500.0,
-      low52w: 43229.6,
-      lastUpdated: "15m interval &bull; Yahoo Finance",
-    },
-    {
-      symbol: "SENSEX",
+      symbol: "BSE SENSEX",
       name: "BSE SENSEX",
-      price: 76944.28,
-      change: -13.00,
-      changePercent: -0.02,
+      price: 76570.35,
+      change: -373.93,
+      changePercent: -0.49,
       high52w: 85978.25,
       low52w: 65120.0,
       lastUpdated: "15m interval &bull; Yahoo Finance",
     },
     {
-      symbol: "INDIA VIX",
-      name: "India Volatility",
-      price: 13.42,
-      change: -0.45,
-      changePercent: -3.24,
-      high52w: 23.15,
-      low52w: 10.05,
+      symbol: "BANK NIFTY",
+      name: "BANK NIFTY",
+      price: 57172.00,
+      change: -237.60,
+      changePercent: -0.41,
+      high52w: 58500.0,
+      low52w: 43229.6,
+      lastUpdated: "15m interval &bull; Yahoo Finance",
+    },
+    {
+      symbol: "NIFTY IT",
+      name: "NIFTY IT",
+      price: 31102.90,
+      change: -88.50,
+      changePercent: -0.28,
+      high52w: 44000.0,
+      low52w: 30000.0,
+      lastUpdated: "15m interval &bull; Yahoo Finance",
+    },
+    {
+      symbol: "NIFTY AUTO",
+      name: "NIFTY AUTO",
+      price: 27981.95,
+      change: -509.10,
+      changePercent: -1.79,
+      high52w: 29500.0,
+      low52w: 20000.0,
       lastUpdated: "15m interval &bull; Yahoo Finance",
     },
   ];
@@ -221,42 +231,45 @@ class YahooMarketDataService implements IMarketDataService {
   private applyYahooData(data: any) {
     if (!data?.indices) return;
 
-    const indexMap: Record<string, string> = {
-      "^NSEI": "NIFTY 50",
-      "^NSEBANK": "BANK NIFTY",
-      "^BSESN": "SENSEX",
+    const indexMap: Record<string, { symbol: string; name: string; high: number; low: number }> = {
+      "^NSEI": { symbol: "NIFTY 50", name: "NIFTY 50", high: 26277.35, low: 21280.0 },
+      "^BSESN": { symbol: "BSE SENSEX", name: "BSE SENSEX", high: 85978.25, low: 65120.0 },
+      "^NSEBANK": { symbol: "BANK NIFTY", name: "BANK NIFTY", high: 58500.0, low: 43229.6 },
+      "^CNXIT": { symbol: "NIFTY IT", name: "NIFTY IT", high: 44000.0, low: 30000.0 },
+      "^CNXAUTO": { symbol: "NIFTY AUTO", name: "NIFTY AUTO", high: 29500.0, low: 20000.0 },
     };
 
-    const newIndices: MarketIndexQuote[] = [];
+    const targetOrder = ["NIFTY 50", "BSE SENSEX", "BANK NIFTY", "NIFTY IT", "NIFTY AUTO"];
+    const foundQuotes: Record<string, MarketIndexQuote> = {};
 
     data.indices.forEach((idx: any) => {
-      const mappedName = indexMap[idx.symbol] || idx.name;
-      if (["NIFTY 50", "BANK NIFTY", "SENSEX"].includes(mappedName)) {
-        newIndices.push({
-          symbol: mappedName,
-          name: mappedName === "SENSEX" ? "BSE SENSEX" : mappedName,
+      const config = indexMap[idx.symbol];
+      if (config) {
+        foundQuotes[config.symbol] = {
+          symbol: config.symbol,
+          name: config.name,
           price: Number(idx.price.toFixed(2)),
           change: Number((idx.change || 0).toFixed(2)),
           changePercent: Number((idx.change_percent || 0).toFixed(2)),
-          high52w: idx.high ? Number(idx.high.toFixed(2)) : 26000,
-          low52w: idx.low ? Number(idx.low.toFixed(2)) : 21000,
+          high52w: idx.high ? Number(idx.high.toFixed(2)) : config.high,
+          low52w: idx.low ? Number(idx.low.toFixed(2)) : config.low,
           lastUpdated: `Yahoo Finance 15m (${new Date(idx.timestamp || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })})`,
-        });
+        };
       }
     });
 
-    if (newIndices.length >= 3) {
-      newIndices.push({
-        symbol: "INDIA VIX",
-        name: "India Volatility",
-        price: 13.42,
-        change: -0.45,
-        changePercent: -3.24,
-        high52w: 23.15,
-        low52w: 10.05,
-        lastUpdated: "Yahoo Finance",
-      });
-      this.cachedQuotes = newIndices;
+    const orderedIndices: MarketIndexQuote[] = [];
+    targetOrder.forEach((sym) => {
+      if (foundQuotes[sym]) {
+        orderedIndices.push(foundQuotes[sym]);
+      } else {
+        const existing = this.cachedQuotes.find((q) => q.symbol === sym);
+        if (existing) orderedIndices.push(existing);
+      }
+    });
+
+    if (orderedIndices.length >= 4) {
+      this.cachedQuotes = orderedIndices;
     }
 
     if (data.top_companies && Array.isArray(data.top_companies)) {
